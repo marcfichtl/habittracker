@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class DataViewModel (val repository: HabitRepository) : ViewModel() {
+class DataVIewModel (val repository: HabitRepository) : ViewModel() {
     private val _habitsUiState = MutableStateFlow(HabitsUiState(emptyList()))
     val habitsUiState = _habitsUiState
 
