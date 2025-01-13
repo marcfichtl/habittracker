@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -57,20 +59,22 @@ enum class Screens(val route: String) {
 fun MainScreen(
     modifier: Modifier = Modifier,
     dataViewModel: DataViewModel = viewModel(factory = ViewModelFactoryProvider.Factory)
-){
+) {
     val navController = rememberNavController()
     val state by dataViewModel.habitsUiState.collectAsStateWithLifecycle()
 
-    NavHost(navController, Screens.Main.route,
+    NavHost(
+        navController, Screens.Main.route,
         modifier = modifier
-    ){
+    ) {
         composable(Screens.Main.route) {
+            AddButton(navController)
             Quote(context = LocalContext.current)
             HabitItem()
             //TODO("Display the Habits on a List")
         }
         composable(Screens.Add.route) {
-            //TODO("Add a new Habit")
+            AddScreen()
         }
         composable(Screens.Edit.route) {
             //TODO("Edit a Habit")
@@ -166,7 +170,6 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
         )
         Spacer(modifier = Modifier)
         Icon(
-            // make sure add baseline_archive_24 resource to drawable folder
             painter = painterResource(R.drawable.check),
             contentDescription = "Archive"
         )
@@ -184,15 +187,17 @@ fun HabitItem(
     //val currentItem by rememberUpdatedState(emailMessage)
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            when(it) {
+            when (it) {
                 SwipeToDismissBoxValue.StartToEnd -> {
                     //onRemove(currentItem)
                     Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show()
                 }
+
                 SwipeToDismissBoxValue.EndToStart -> {
                     //onRemove(currentItem)
                     Toast.makeText(context, "Item archived", Toast.LENGTH_SHORT).show()
                 }
+
                 SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
             }
             return@rememberSwipeToDismissBoxState true
@@ -203,8 +208,21 @@ fun HabitItem(
     SwipeToDismissBox(
         state = dismissState,
         modifier = modifier,
-        backgroundContent = { DismissBackground(dismissState)},
+        backgroundContent = { DismissBackground(dismissState) },
         content = {
             HabitCard()
         })
+}
+
+@Composable
+fun AddButton(navController: NavController) {
+    Button(
+        onClick = { navController.navigate(Screens.Add.route) },
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.plus),
+            contentDescription = "Add"
+        )
+    }
 }
