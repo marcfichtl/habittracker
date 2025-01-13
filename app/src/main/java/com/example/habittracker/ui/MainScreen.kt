@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -72,7 +75,11 @@ fun MainScreen(
             Column {
                 AddButton(navController)
                 Quote(context = LocalContext.current, modifier = Modifier.weight(1f))
-                HabitItem()
+                HabitItem(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .height(100.dp)
+                )
             }
             //TODO("Display the Habits on a List")
         }
@@ -124,26 +131,27 @@ fun getQuotesFromAssets(context: Context): List<Quote> {
 @Composable
 fun HabitCard() {
     ListItem(
-        modifier = Modifier.clip(MaterialTheme.shapes.small),
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .height(100.dp),
         headlineContent = {
             Text(
-                text = "Larry",
+                text = "Run 1 km",
                 style = MaterialTheme.typography.titleMedium
             )
         },
         supportingContent = {
             Text(
-                text = "1 day left",
+                text = "16/30 days",
                 style = MaterialTheme.typography.bodySmall
             )
         },
-        leadingContent = {
+        trailingContent = {
             Icon(
                 painter = painterResource(id = R.drawable.circle),
-                contentDescription = "person icon",
+                contentDescription = "checkmark icon",
                 Modifier
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
                     .padding(10.dp)
             )
         }
@@ -162,6 +170,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
     Row(
         modifier = Modifier
             .fillMaxSize()
+            .clip(RoundedCornerShape(12.dp))
             .background(color)
             .padding(12.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -174,7 +183,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
         Spacer(modifier = Modifier)
         Icon(
             painter = painterResource(R.drawable.check),
-            contentDescription = "Archive"
+            contentDescription = "check"
         )
     }
 }
@@ -219,13 +228,20 @@ fun HabitItem(
 
 @Composable
 fun AddButton(navController: NavController) {
-    Button(
-        onClick = { navController.navigate(Screens.Add.route) },
-        modifier = Modifier.padding(16.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.plus),
-            contentDescription = "Add"
-        )
+        Button(
+            onClick = { navController.navigate(Screens.Add.route) },
+            modifier = Modifier.padding(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.plus),
+                contentDescription = "Add",
+                tint = Color.White
+            )
+        }
     }
 }
