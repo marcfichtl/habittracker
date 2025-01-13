@@ -31,13 +31,13 @@ fun MainScreen(
         modifier = modifier
     ){
         composable(Screens.Main.route) {
-            TODO("Display the Habits on a List")
+            //TODO("Display the Habits on a List")
         }
         composable(Screens.Add.route) {
-            TODO("Add a new Habit")
+            //TODO("Add a new Habit")
         }
         composable(Screens.Edit.route) {
-            TODO("Edit a Habit")
+            //TODO("Edit a Habit")
         }
     }
 }
