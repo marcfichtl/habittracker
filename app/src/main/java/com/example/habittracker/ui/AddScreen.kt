@@ -4,17 +4,24 @@ import android.content.res.Resources.Theme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -24,11 +31,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 val colorOptions = listOf(
-    Color(0xFFFFFFFF),
+    Color(0xFFf48b94),
+    Color(0xFF88c0a8),
+    Color(0xFF8493ca),
+    Color(0xFF91b4d3),
+    Color(0xFFfa9189),
+    Color.DarkGray,
 )
 
 @Composable
@@ -41,7 +54,7 @@ fun AddScreen() {
         Box(
             modifier = Modifier
                 .background(
-                    color = Color(0xFFf48b94),
+                    color = selectedColor,
                     shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
                 )
                 .fillMaxWidth()
@@ -74,12 +87,53 @@ fun AddScreen() {
                 )
             }
         }
+
+        //Under colored box
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.7f)
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(selectedColor)
+                    .clickable { showDialog = true }
+            )
+        }
 
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Select Color") },
+                text = {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(4),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(colorOptions.size) { index ->
+                            Box(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(50.dp)
+                                    .clip(RoundedCornerShape(50))
+                                    .background(colorOptions[index])
+                                    .clickable {
+                                        selectedColor = colorOptions[index]
+                                        showDialog = false
+                                    },
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showDialog = false }) {
+                        Text("Close")
+                    }
+                }
+            )
         }
     }
 }
