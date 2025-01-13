@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -68,9 +69,11 @@ fun MainScreen(
         modifier = modifier
     ) {
         composable(Screens.Main.route) {
-            AddButton(navController)
-            Quote(context = LocalContext.current)
-            HabitItem()
+            Column {
+                AddButton(navController)
+                Quote(context = LocalContext.current, modifier = Modifier.weight(1f))
+                HabitItem()
+            }
             //TODO("Display the Habits on a List")
         }
         composable(Screens.Add.route) {
@@ -85,11 +88,11 @@ fun MainScreen(
 data class Quote(val id: Int, val text: String)
 
 @Composable
-fun Quote(context: Context) {
+fun Quote(context: Context, modifier: Modifier) {
     val quotes = getQuotesFromAssets(context)
     val randomQuote = quotes[Random.nextInt(quotes.size)]
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Text(
