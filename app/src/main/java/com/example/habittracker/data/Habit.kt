@@ -5,5 +5,6 @@ data class Habit (
     val name: String,
     val color: Int,
     val reminder: Boolean,
-    val repeat: List<String>
+    val repeat: List<String>,
+    val finished: List<String>
 )

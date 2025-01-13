@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.habittracker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.habittracker"

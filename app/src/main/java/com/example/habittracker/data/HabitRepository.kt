@@ -13,7 +13,8 @@ class HabitRepository (private val habitDao: HabitDao) {
                 habitEntity.name,
                 habitEntity.color,
                 habitEntity.reminder,
-                habitEntity.repeat
+                habitEntity.repeat,
+                habitEntity.finished
             )
         }
     }
@@ -24,7 +25,8 @@ class HabitRepository (private val habitDao: HabitDao) {
             habit.name,
             habit.color,
             habit.reminder,
-            habit.repeat
+            habit.repeat,
+            habit.finished
         )
         habitDao.addHabit(entity)
     }
@@ -39,7 +41,8 @@ class HabitRepository (private val habitDao: HabitDao) {
             habit.name,
             habit.color,
             habit.reminder,
-            habit.repeat
+            habit.repeat,
+            habit.finished
         )
         habitDao.updateHabit(entity)
     }
@@ -50,7 +53,8 @@ class HabitRepository (private val habitDao: HabitDao) {
             habitEntity.name,
             habitEntity.color,
             habitEntity.reminder,
-            habitEntity.repeat
+            habitEntity.repeat,
+            habitEntity.finished
         )
     }
 
