@@ -1,9 +1,9 @@
 package com.example.habittracker.data.db
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.habittracker.HabitApplication
 
 @Database(entities = [HabitEntity::class], version = 1)
 
@@ -14,7 +14,7 @@ abstract class HabitDatabase : RoomDatabase() {
         @Volatile
         private var Instance: HabitDatabase? = null
 
-        fun getDatabase(context: Context): HabitDatabase {
+        fun getDatabase(context: HabitApplication): HabitDatabase {
             return Instance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(context, HabitDatabase::class.java, "habit_database")
                     .fallbackToDestructiveMigration()
