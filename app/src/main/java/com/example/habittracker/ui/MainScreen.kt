@@ -194,13 +194,16 @@ fun HabitCard(habit: Habit, navController: NavController) {
             ),
             headlineContent = {
                 Text(
-                    text = habit.name, style = MaterialTheme.typography.titleMedium, color = Primary
+                    text = habit.name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
                 )
             },
             supportingContent = {
                 Text(
-                    text = "$daysCompletedInMonth/$daysInMonth days",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "$daysCompletedInMonth/$daysInMonth Days",
+                    fontSize = 14.sp,
                     color = Primary
                 )
             },

@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,9 +40,13 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
         .collectAsStateWithLifecycle(initialValue = null)
 
     habit?.let { nonNullHabit ->
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        val startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
         val daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
         val finishedDays: List<Date> = nonNullHabit.finished
         var selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
+        val dayLabels = listOf("S", "M", "T", "W", "T", "F", "S")
 
         Column {
             Box(
@@ -81,11 +86,46 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     .weight(0.7f)
                     .padding(top = 72.dp, start = 24.dp, end = 24.dp)
             ) {
+                Text(
+                    text = calendar.getDisplayName(
+                        Calendar.MONTH,
+                        Calendar.LONG,
+                        java.util.Locale.US
+                    ) ?: "Month",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 28.dp, start = 8.dp),
+                    color = Primary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    dayLabels.forEach { label ->
+                        Text(
+                            text = label,
+                            modifier = Modifier.weight(1f),
+                            color = Primary,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(7),
-                    modifier = Modifier.padding(top = 48.dp),
+                    modifier = Modifier.padding(top = 16.dp),
                     verticalArrangement = Arrangement.Center,
                 ) {
+                    items(startDayOfWeek) {
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(40.dp)
+                        )
+                    }
                     items(daysInMonth) { day ->
                         var dayColor = Color.DarkGray
                         var textColor = Color.Gray
@@ -101,7 +141,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
 
                         Box(
                             modifier = Modifier
-                                .padding(4.dp)
+                                .padding(5.dp)
                                 .size(40.dp)
                                 .background(dayColor, shape = RoundedCornerShape(8.dp))
                         ) {
