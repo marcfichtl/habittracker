@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
@@ -229,10 +230,14 @@ fun HabitCard(habit: Habit, navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DismissBackground(dismissState: SwipeToDismissBoxState) {
+fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boolean) {
     val color = when (dismissState.dismissDirection) {
         SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
-        SwipeToDismissBoxValue.EndToStart -> Color(0xFF33cc33)
+        SwipeToDismissBoxValue.EndToStart -> Color(
+            if (isFinishedToday)
+                0xFFff6666
+            else 0xFF33cc33
+        )
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
 
@@ -249,11 +254,17 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
             Icons.Default.Edit, contentDescription = "edit", tint = Background
         )
         Spacer(modifier = Modifier)
-        Icon(
-            painter = painterResource(R.drawable.check),
-            contentDescription = "check",
-            tint = Background
-        )
+        if (isFinishedToday) {
+            Icon(
+                Icons.Default.Clear, contentDescription = "clear", tint = Background
+            )
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.check),
+                contentDescription = "check",
+                tint = Background
+            )
+        }
     }
 }
 
@@ -302,7 +313,7 @@ fun HabitItem(
         positionalThreshold = { it * .25f })
     SwipeToDismissBox(state = dismissState,
         modifier = modifier,
-        backgroundContent = { DismissBackground(dismissState) },
+        backgroundContent = { DismissBackground(dismissState, isFinishedToday) },
         content = {
             HabitCard(habit, navController)
         })
