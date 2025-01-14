@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class DataViewModel (val repository: HabitRepository) : ViewModel() {
     private val _habitsUiState = MutableStateFlow(HabitsUiState(emptyList()))
@@ -49,11 +51,23 @@ class DataViewModel (val repository: HabitRepository) : ViewModel() {
         }
     }
 
-    fun markHabitsAsFinished(id: Int){
+    fun markHabitsAsFinished(habitId: Int) {
         viewModelScope.launch {
-            val habit = repository.getHabitById(id).first()
-            val updateFinished = habit.finished.toMutableList().apply { add(Date()) }
-            repository.updateFinished(id, updateFinished)
+            val habit = repository.getHabitById(habitId).first()
+            val updatedFinishedDates = habit.finished.toMutableList().apply {
+                add(Date())
+            }
+            repository.updateHabit(habit.copy(finished = updatedFinishedDates))
+        }
+    }
+
+    fun unmarkHabitAsFinished(habitId: Int) {
+        viewModelScope.launch {
+            val habit = repository.getHabitById(habitId).first()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val todayString = dateFormat.format(Date())
+            val updatedFinishedDates = habit.finished.filter { dateFormat.format(it) != todayString }
+            repository.updateHabit(habit.copy(finished = updatedFinishedDates))
         }
     }
 }

@@ -37,7 +37,10 @@ import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -245,6 +248,15 @@ fun HabitItem(
     //onHabitChecked: () -> Unit
 ) {
     val context = LocalContext.current
+    val today = remember { Date() }
+    val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+    val todayString = remember { dateFormat.format(today) }
+    var isFinishedToday by remember { mutableStateOf(habit.finished.any { dateFormat.format(it) == todayString }) }
+
+    LaunchedEffect(habit.finished) {
+        isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
+    }
+
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
             when (it) {
@@ -254,8 +266,13 @@ fun HabitItem(
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
-                    dataViewModel.markHabitsAsFinished(habit.id)
-                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                    if (isFinishedToday) {
+                        dataViewModel.unmarkHabitAsFinished(habit.id)
+                        Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                    } else {
+                        dataViewModel.markHabitsAsFinished(habit.id)
+                        Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                    }
                     return@rememberSwipeToDismissBoxState false
                 }
 
