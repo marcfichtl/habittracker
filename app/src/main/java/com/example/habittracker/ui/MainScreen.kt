@@ -20,11 +20,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxState
@@ -32,6 +35,7 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -86,7 +90,8 @@ fun MainScreen(
                             habit = habit,
                             modifier = Modifier
                                 .padding(16.dp)
-                                .height(100.dp)
+                                .height(100.dp),
+                            navController
                         )
                     }
                 }
@@ -96,8 +101,9 @@ fun MainScreen(
         composable(Screens.Add.route) {
             AddScreen(navController, dataViewModel)
         }
-        composable(Screens.Edit.route) {
-            //TODO("Edit a Habit")
+        composable("Edit/{habitId}") { backStackEntry ->
+            val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?:0
+            EditScreen(navController, dataViewModel, habitId)
         }
     }
 }
@@ -143,12 +149,14 @@ fun HabitCard(habit: Habit) {
     ListItem(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
-            .height(100.dp)
-            .background(colorOptions[habit.color]),
+            .height(100.dp),
+        colors = androidx.compose.material3.ListItemDefaults.colors(
+            containerColor = colorOptions[habit.color],
+        ),
         headlineContent = {
             Text(
                 text = habit.name,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         supportingContent = {
@@ -173,7 +181,7 @@ fun HabitCard(habit: Habit) {
 @Composable
 fun DismissBackground(dismissState: SwipeToDismissBoxState) {
     val color = when (dismissState.dismissDirection) {
-        SwipeToDismissBoxValue.StartToEnd -> Color(0xFFFF1744)
+        SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
         SwipeToDismissBoxValue.EndToStart -> Color(0xFF1DE9B6)
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
@@ -188,13 +196,15 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
-            Icons.Default.Delete,
-            contentDescription = "delete"
+            Icons.Default.Edit,
+            contentDescription = "edit",
+            tint = Color.Black
         )
         Spacer(modifier = Modifier)
         Icon(
             painter = painterResource(R.drawable.check),
-            contentDescription = "check"
+            contentDescription = "check",
+            tint = Color.Black
         )
     }
 }
@@ -204,6 +214,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
 fun HabitItem(
     habit: Habit,
     modifier: Modifier = Modifier,
+    navController: NavController,
     //onRemove: () -> Unit
 ) {
     val context = LocalContext.current
@@ -211,18 +222,19 @@ fun HabitItem(
         confirmValueChange = {
             when (it) {
                 SwipeToDismissBoxValue.StartToEnd -> {
-                    //onRemove(currentItem)
-                    Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show()
+                    navController.navigate("Edit/${habit.id}")
+                    return@rememberSwipeToDismissBoxState false
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
                     //onRemove(currentItem)
                     Toast.makeText(context, "Item archived", Toast.LENGTH_SHORT).show()
+                    return@rememberSwipeToDismissBoxState false
                 }
 
                 SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
             }
-            return@rememberSwipeToDismissBoxState true
+            //return@rememberSwipeToDismissBoxState true
         },
         // positional threshold of 25%
         positionalThreshold = { it * .25f }
