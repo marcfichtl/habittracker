@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,6 +52,7 @@ fun AddScreen() {
     var name by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(colorOptions[0]) }
     var showDialog by remember { mutableStateOf(false) }
+    var reminderChecked by remember { mutableStateOf(false) }
 
     Column {
         Box(
@@ -93,9 +97,8 @@ fun AddScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.7f)
-                .padding(top = 56.dp, start = 32.dp, end = 32.dp)
+                .padding(top = 72.dp, start = 32.dp, end = 32.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,6 +117,38 @@ fun AddScreen() {
                         .clip(RoundedCornerShape(50))
                         .background(selectedColor)
                         .clickable { showDialog = true }
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color.Gray)
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp, bottom = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Reminder",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Checkbox(
+                    modifier = Modifier.scale(1.5f),
+                    checked = reminderChecked,
+                    onCheckedChange = { checked ->
+                        reminderChecked = checked
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkmarkColor = Color.White,
+                        checkedColor = selectedColor
+                    )
+
                 )
             }
             Spacer(
