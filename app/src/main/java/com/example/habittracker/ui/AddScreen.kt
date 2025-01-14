@@ -181,7 +181,6 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                                 name = name,
                                 color = colorOptions.indexOf(selectedColor),
                                 reminder = reminderChecked,
-                                repeat = emptyList(),
                                 finished = emptyList()
                             )
                         )

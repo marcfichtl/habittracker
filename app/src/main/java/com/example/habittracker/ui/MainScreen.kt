@@ -59,6 +59,9 @@ import com.example.habittracker.data.Habit
 import com.example.habittracker.ui.theme.colorOptions
 import org.json.JSONObject
 import java.io.InputStreamReader
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.random.Random
 
 enum class Screens(val route: String) {
@@ -91,7 +94,8 @@ fun MainScreen(
                             modifier = Modifier
                                 .padding(16.dp)
                                 .height(100.dp),
-                            navController
+                            navController,
+                            dataViewModel
                         )
                     }
                 }
@@ -146,6 +150,11 @@ fun getQuotesFromAssets(context: Context): List<Quote> {
 
 @Composable
 fun HabitCard(habit: Habit) {
+    val today = Date()
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    val todayString = dateFormat.format(today)
+    val isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
+
     ListItem(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
@@ -166,13 +175,23 @@ fun HabitCard(habit: Habit) {
             )
         },
         trailingContent = {
-            Icon(
-                painter = painterResource(id = R.drawable.circle),
-                contentDescription = "checkmark icon",
-                Modifier
-                    .clip(CircleShape)
-                    .padding(10.dp)
-            )
+            if (isFinishedToday) {
+                Icon(
+                    painter = painterResource(id = R.drawable.check),
+                    contentDescription = "checkmark icon",
+                    Modifier
+                        .clip(CircleShape)
+                        .padding(10.dp)
+                )
+            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.circle),
+                    contentDescription = "checkmark icon",
+                    Modifier
+                        .clip(CircleShape)
+                        .padding(10.dp)
+                )
+            }
         }
     )
 }
@@ -215,6 +234,7 @@ fun HabitItem(
     habit: Habit,
     modifier: Modifier = Modifier,
     navController: NavController,
+    dataViewModel: DataViewModel,
     //onHabitChecked: () -> Unit
 ) {
     val context = LocalContext.current
@@ -227,8 +247,8 @@ fun HabitItem(
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
-
-                    Toast.makeText(context, "Item archived", Toast.LENGTH_SHORT).show()
+                    dataViewModel.markHabitsAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
                     return@rememberSwipeToDismissBoxState false
                 }
 

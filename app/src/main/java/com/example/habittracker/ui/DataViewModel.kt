@@ -6,8 +6,10 @@ import com.example.habittracker.data.Habit
 import com.example.habittracker.data.HabitRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class DataViewModel (val repository: HabitRepository) : ViewModel() {
     private val _habitsUiState = MutableStateFlow(HabitsUiState(emptyList()))
@@ -44,6 +46,14 @@ class DataViewModel (val repository: HabitRepository) : ViewModel() {
     fun updateHabit(habit: Habit) {
         viewModelScope.launch {
             repository.updateHabit(habit)
+        }
+    }
+
+    fun markHabitsAsFinished(id: Int){
+        viewModelScope.launch {
+            val habit = repository.getHabitById(id).first()
+            val updateFinished = habit.finished.toMutableList().apply { add(Date()) }
+            repository.updateFinished(id, updateFinished)
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface HabitDao {
@@ -27,4 +28,7 @@ interface HabitDao {
 
     @Query ("SELECT * FROM habits WHERE _id = :id")
     fun getHabitById(id: Int): Flow<HabitEntity>
+
+    @Query ("UPDATE habits SET finished = :finished WHERE _id = :id")
+    suspend fun updateFinished(id: Int, finished: List<Date>)
 }

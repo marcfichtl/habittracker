@@ -3,6 +3,7 @@ package com.example.habittracker.data
 import com.example.habittracker.data.db.HabitDao
 import com.example.habittracker.data.db.HabitEntity
 import kotlinx.coroutines.flow.map
+import java.util.Date
 
 class HabitRepository (private val habitDao: HabitDao) {
 
@@ -13,7 +14,6 @@ class HabitRepository (private val habitDao: HabitDao) {
                 habitEntity.name,
                 habitEntity.color,
                 habitEntity.reminder,
-                habitEntity.repeat,
                 habitEntity.finished
             )
         }
@@ -25,7 +25,6 @@ class HabitRepository (private val habitDao: HabitDao) {
             habit.name,
             habit.color,
             habit.reminder,
-            habit.repeat,
             habit.finished
         )
         habitDao.addHabit(entity)
@@ -41,7 +40,6 @@ class HabitRepository (private val habitDao: HabitDao) {
             habit.name,
             habit.color,
             habit.reminder,
-            habit.repeat,
             habit.finished
         )
         habitDao.updateHabit(entity)
@@ -53,9 +51,12 @@ class HabitRepository (private val habitDao: HabitDao) {
             habitEntity.name,
             habitEntity.color,
             habitEntity.reminder,
-            habitEntity.repeat,
             habitEntity.finished
         )
+    }
+
+    suspend fun updateFinished(id: Int, finished: List<Date>) {
+        habitDao.updateFinished(id, finished)
     }
 
 }
