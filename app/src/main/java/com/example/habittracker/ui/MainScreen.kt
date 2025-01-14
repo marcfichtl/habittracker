@@ -182,7 +182,7 @@ fun HabitCard(habit: Habit) {
 fun DismissBackground(dismissState: SwipeToDismissBoxState) {
     val color = when (dismissState.dismissDirection) {
         SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
-        SwipeToDismissBoxValue.EndToStart -> Color(0xFF1DE9B6)
+        SwipeToDismissBoxValue.EndToStart -> Color(0xFF33cc33)
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
 
@@ -215,7 +215,7 @@ fun HabitItem(
     habit: Habit,
     modifier: Modifier = Modifier,
     navController: NavController,
-    //onRemove: () -> Unit
+    //onHabitChecked: () -> Unit
 ) {
     val context = LocalContext.current
     val dismissState = rememberSwipeToDismissBoxState(
@@ -227,7 +227,7 @@ fun HabitItem(
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
-                    //onRemove(currentItem)
+
                     Toast.makeText(context, "Item archived", Toast.LENGTH_SHORT).show()
                     return@rememberSwipeToDismissBoxState false
                 }

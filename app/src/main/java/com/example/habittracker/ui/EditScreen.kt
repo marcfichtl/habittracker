@@ -168,10 +168,20 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                 ) {
                     TextButton(
                         onClick = {
+                            dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
                             navController.popBackStack()
-                        }
+                        },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent
+                        )
                     ) {
-                        Text("Cancel")
+                        Text(
+                            "Delete",
+                            color = Color.Red,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                     Button(
                         modifier = Modifier
@@ -196,6 +206,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                             color = Color.White
                         )
                     }
+
                 }
             }
 
