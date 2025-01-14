@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -74,7 +75,10 @@ import java.util.Locale
 import kotlin.random.Random
 
 enum class Screens(val route: String) {
-    Main("Main"), Add("Add"), Edit("edit/{habitId}")
+    Main("Main"),
+    Add("Add"),
+    Edit("edit/{habitId}"),
+    Stats("stats/{habitId}")
 }
 
 @Composable
@@ -115,6 +119,10 @@ fun MainScreen(
             val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
             EditScreen(navController, dataViewModel, habitId)
         }
+        composable(Screens.Stats.route) { backStackEntry ->
+            val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
+            StatsScreen(navController, dataViewModel, habitId)
+        }
     }
 }
 
@@ -137,7 +145,7 @@ fun QuoteDisplay(quote: Quote, modifier: Modifier) {
 }
 
 @Composable
-fun HabitCard(habit: Habit) {
+fun HabitCard(habit: Habit, navController: NavController) {
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val todayString = dateFormat.format(today)
@@ -165,6 +173,9 @@ fun HabitCard(habit: Habit) {
             .clip(RoundedCornerShape(12.dp))
             .height(100.dp)
             .background(Color.DarkGray)
+            .clickable {
+                navController.navigate("stats/${habit.id}")
+            }
     ) {
         Box(
             modifier = Modifier
@@ -293,7 +304,7 @@ fun HabitItem(
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState) },
         content = {
-            HabitCard(habit)
+            HabitCard(habit, navController)
         })
 }
 
