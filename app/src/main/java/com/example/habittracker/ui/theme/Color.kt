@@ -11,6 +11,8 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Primary = Color(0xFFF8F8F8)
+
+// Testing color
 //Primary = Color(0xFF6650a4)
 
 val Secondary = Color(0xFF282828)

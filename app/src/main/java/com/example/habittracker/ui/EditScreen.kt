@@ -188,7 +188,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     ) {
                         Text(
                             "Delete",
-                            color = Color.Red,
+                            color = Color(0xFFEB4E3D),
                             fontWeight = FontWeight.Bold
                         )
                     }
