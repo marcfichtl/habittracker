@@ -121,7 +121,10 @@ fun MainScreen(
 @Composable
 fun QuoteDisplay(quote: Quote, modifier: Modifier) {
     Box(
-        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 64.dp, bottom = 16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = quote.text,
