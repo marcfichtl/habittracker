@@ -84,7 +84,7 @@ fun MainScreen(
             //TODO("Display the Habits on a List")
         }
         composable(Screens.Add.route) {
-            AddScreen()
+            AddScreen(navController, dataViewModel)
         }
         composable(Screens.Edit.route) {
             //TODO("Edit a Habit")

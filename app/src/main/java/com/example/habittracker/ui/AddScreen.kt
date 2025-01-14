@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -37,6 +39,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.habittracker.data.Habit
 
 val colorOptions = listOf(
     Color(0xFFF48B94),
@@ -50,7 +54,7 @@ val colorOptions = listOf(
 )
 
 @Composable
-fun AddScreen() {
+fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var name by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(colorOptions[0]) }
     var showDialog by remember { mutableStateOf(false) }
@@ -158,8 +162,47 @@ fun AddScreen() {
                     .fillMaxWidth()
                     .height(1.dp)
                     .background(Color.Gray)
-                    .padding(bottom = 16.dp)
             )
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 32.dp, start = 32.dp, end = 32.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextButton(
+                    onClick = {
+                        navController.popBackStack()
+                    }
+                ) {
+                    Text("Cancel")
+                }
+                Button(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(selectedColor),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent
+                    ),
+                    onClick = {
+                        dataviewmodel.onAddHabitClick(
+                            Habit(
+                                id = 0,
+                                name = name,
+                                color = colorOptions.indexOf(selectedColor),
+                                reminder = reminderChecked,
+                                repeat = emptyList(),
+                                finished = emptyList()
+                            )
+                        )
+                        navController.popBackStack()
+                    },
+                ) {
+                    Text("Save",
+                        color = Color.White
+                    )
+                }
+            }
 
         }
 
