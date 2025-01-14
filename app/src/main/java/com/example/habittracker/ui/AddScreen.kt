@@ -41,17 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habittracker.data.Habit
-
-val colorOptions = listOf(
-    Color(0xFFF48B94),
-    Color(0xFF88C0A8),
-    Color(0xFF8493CA),
-    Color(0xFF91B4D3),
-    Color(0xFFFA9189),
-    Color(0xFFE79D74),
-    Color(0xFFD1B15F),
-    Color.DarkGray,
-)
+import com.example.habittracker.ui.theme.colorOptions
 
 @Composable
 fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
