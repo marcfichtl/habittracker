@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habittracker.data.Habit
+import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 
 @Composable
@@ -66,7 +67,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                     .fillMaxWidth()
                     .padding(32.dp)
             ) {
-                Text("Habit Name")
+                Text(
+                    text = "Habit Name",
+                    color = Primary
+                )
                 TextField(
                     value = name,
                     onValueChange = { name = it },
@@ -74,7 +78,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         .fillMaxWidth()
                         .height(56.dp)
                         .border(
-                            BorderStroke(2.dp, Color.White),
+                            BorderStroke(2.dp, Primary),
                             shape = RoundedCornerShape(4.dp)
                         ),
                     colors = TextFieldDefaults.colors(
@@ -82,13 +86,15 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         unfocusedContainerColor = Color.Transparent,
                         unfocusedLabelColor = Color.Gray,
                         unfocusedIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent
+                        focusedIndicatorColor = Color.Transparent,
+                        focusedTextColor = Primary,
+                        unfocusedTextColor = Primary
                     )
                 )
             }
         }
 
-        //Under colored box
+        // Under colored box
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -105,7 +111,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 Text(
                     text = "Choose Color",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
                 )
                 Box(
                     modifier = Modifier
@@ -132,7 +139,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 Text(
                     text = "Reminder",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
                 )
                 Checkbox(
                     modifier = Modifier.scale(1.5f),
@@ -141,10 +149,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         reminderChecked = checked
                     },
                     colors = CheckboxDefaults.colors(
-                        checkmarkColor = Color.White,
+                        uncheckedColor = Primary,
+                        checkmarkColor = Primary,
                         checkedColor = selectedColor
                     )
-
                 )
             }
             Spacer(
@@ -187,12 +195,12 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         navController.popBackStack()
                     },
                 ) {
-                    Text("Save",
-                        color = Color.White
+                    Text(
+                        "Save",
+                        color = Primary
                     )
                 }
             }
-
         }
 
         if (showDialog) {

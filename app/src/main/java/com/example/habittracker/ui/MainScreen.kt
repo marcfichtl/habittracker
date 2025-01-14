@@ -56,6 +56,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habittracker.R
 import com.example.habittracker.data.Habit
+import com.example.habittracker.ui.theme.Background
+import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 import org.json.JSONObject
 import java.io.InputStreamReader
@@ -126,7 +128,8 @@ fun Quote(context: Context, modifier: Modifier) {
             text = randomQuote.text,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = Primary
         )
     }
 }
@@ -166,12 +169,14 @@ fun HabitCard(habit: Habit) {
             Text(
                 text = habit.name,
                 style = MaterialTheme.typography.titleMedium,
+                color = Primary
             )
         },
         supportingContent = {
             Text(
                 text = "16/30 days",
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                color = Primary
             )
         },
         trailingContent = {
@@ -179,7 +184,8 @@ fun HabitCard(habit: Habit) {
                 Icon(
                     painter = painterResource(id = R.drawable.check),
                     contentDescription = "checkmark icon",
-                    Modifier
+                    tint = Primary,
+                    modifier = Modifier
                         .clip(CircleShape)
                         .padding(10.dp)
                 )
@@ -187,7 +193,8 @@ fun HabitCard(habit: Habit) {
                 Icon(
                     painter = painterResource(id = R.drawable.circle),
                     contentDescription = "checkmark icon",
-                    Modifier
+                    tint = Primary,
+                    modifier = Modifier
                         .clip(CircleShape)
                         .padding(10.dp)
                 )
@@ -217,13 +224,13 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
         Icon(
             Icons.Default.Edit,
             contentDescription = "edit",
-            tint = Color.Black
+            tint = Background
         )
         Spacer(modifier = Modifier)
         Icon(
             painter = painterResource(R.drawable.check),
             contentDescription = "check",
-            tint = Color.Black
+            tint = Background
         )
     }
 }
@@ -282,7 +289,7 @@ fun AddButton(navController: NavController) {
             Icon(
                 painter = painterResource(id = R.drawable.plus),
                 contentDescription = "Add",
-                tint = Color.White
+                tint = Primary
             )
         }
     }
