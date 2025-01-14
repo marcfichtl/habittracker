@@ -3,12 +3,15 @@ package com.example.habittracker.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.Toast
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,14 +68,13 @@ import com.example.habittracker.ui.theme.colorOptions
 import org.json.JSONObject
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlin.random.Random
 
 enum class Screens(val route: String) {
-    Main("Main"),
-    Add("Add"),
-    Edit("edit/{habitId}")
+    Main("Main"), Add("Add"), Edit("edit/{habitId}")
 }
 
 @Composable
@@ -84,8 +86,7 @@ fun MainScreen(
     val state by dataViewModel.habitsUiState.collectAsStateWithLifecycle()
 
     NavHost(
-        navController, Screens.Main.route,
-        modifier = modifier
+        navController, Screens.Main.route, modifier = modifier
     ) {
         composable(Screens.Main.route) {
             Column {
@@ -111,7 +112,7 @@ fun MainScreen(
             AddScreen(navController, dataViewModel)
         }
         composable("Edit/{habitId}") { backStackEntry ->
-            val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?:0
+            val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
             EditScreen(navController, dataViewModel, habitId)
         }
     }
@@ -124,8 +125,7 @@ fun Quote(context: Context, modifier: Modifier) {
     val quotes = getQuotesFromAssets(context)
     val randomQuote = quotes[Random.nextInt(quotes.size)]
     Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
     ) {
         Text(
             text = randomQuote.text,
@@ -159,51 +159,79 @@ fun HabitCard(habit: Habit) {
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val todayString = dateFormat.format(today)
-    val isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
+    val calendar = Calendar.getInstance()
+    val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    val currentMonth = calendar.get(Calendar.MONTH)
+    val currentYear = calendar.get(Calendar.YEAR)
 
-    ListItem(
+    val daysCompletedInMonth = habit.finished.count {
+        val date = dateFormat.parse(dateFormat.format(it))
+        date?.let {
+            val habitCalendar = Calendar.getInstance().apply { time = it }
+            habitCalendar.get(Calendar.MONTH) == currentMonth && habitCalendar.get(Calendar.YEAR) == currentYear
+        } ?: false
+    }
+
+    val progress by animateFloatAsState(
+        targetValue = daysCompletedInMonth.toFloat() / daysInMonth,
+        animationSpec = tween(durationMillis = 1000),
+        label = "progress"
+    )
+
+    Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
-            .height(100.dp),
-        colors = androidx.compose.material3.ListItemDefaults.colors(
-            containerColor = colorOptions[habit.color],
-        ),
-        headlineContent = {
-            Text(
-                text = habit.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = Primary
-            )
-        },
-        supportingContent = {
-            Text(
-                text = "16/30 days",
-                style = MaterialTheme.typography.bodySmall,
-                color = Primary
-            )
-        },
-        trailingContent = {
-            if (isFinishedToday) {
-                Icon(
-                    painter = painterResource(id = R.drawable.check),
-                    contentDescription = "checkmark icon",
-                    tint = Primary,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .padding(10.dp)
+            .height(100.dp)
+            .background(Color.DarkGray)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(progress)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(12.dp))
+                .background(colorOptions[habit.color])
+        )
+
+        ListItem(modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(12.dp)),
+            colors = ListItemDefaults.colors(
+                containerColor = Color.Transparent,
+            ),
+            headlineContent = {
+                Text(
+                    text = habit.name, style = MaterialTheme.typography.titleMedium, color = Primary
                 )
-            } else {
-                Icon(
-                    painter = painterResource(id = R.drawable.circle),
-                    contentDescription = "checkmark icon",
-                    tint = Primary,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .padding(10.dp)
+            },
+            supportingContent = {
+                Text(
+                    text = "$daysCompletedInMonth/$daysInMonth days",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Primary
                 )
-            }
-        }
-    )
+            },
+            trailingContent = {
+                if (habit.finished.any { dateFormat.format(it) == todayString }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.check),
+                        contentDescription = "checkmark icon",
+                        tint = Primary,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.circle),
+                        contentDescription = "checkmark icon",
+                        tint = Primary,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                    )
+                }
+            })
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -225,9 +253,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
-            Icons.Default.Edit,
-            contentDescription = "edit",
-            tint = Background
+            Icons.Default.Edit, contentDescription = "edit", tint = Background
         )
         Spacer(modifier = Modifier)
         Icon(
@@ -257,34 +283,31 @@ fun HabitItem(
         isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
     }
 
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = {
-            when (it) {
-                SwipeToDismissBoxValue.StartToEnd -> {
-                    navController.navigate("Edit/${habit.id}")
-                    return@rememberSwipeToDismissBoxState false
-                }
-
-                SwipeToDismissBoxValue.EndToStart -> {
-                    if (isFinishedToday) {
-                        dataViewModel.unmarkHabitAsFinished(habit.id)
-                        Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
-                    } else {
-                        dataViewModel.markHabitsAsFinished(habit.id)
-                        Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
-                    }
-                    return@rememberSwipeToDismissBoxState false
-                }
-
-                SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
+    val dismissState = rememberSwipeToDismissBoxState(confirmValueChange = {
+        when (it) {
+            SwipeToDismissBoxValue.StartToEnd -> {
+                navController.navigate("Edit/${habit.id}")
+                return@rememberSwipeToDismissBoxState false
             }
-            //return@rememberSwipeToDismissBoxState true
-        },
+
+            SwipeToDismissBoxValue.EndToStart -> {
+                if (isFinishedToday) {
+                    dataViewModel.unmarkHabitAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                } else {
+                    dataViewModel.markHabitsAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                }
+                return@rememberSwipeToDismissBoxState false
+            }
+
+            SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
+        }
+        //return@rememberSwipeToDismissBoxState true
+    },
         // positional threshold of 25%
-        positionalThreshold = { it * .25f }
-    )
-    SwipeToDismissBox(
-        state = dismissState,
+        positionalThreshold = { it * .25f })
+    SwipeToDismissBox(state = dismissState,
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState) },
         content = {
@@ -295,8 +318,7 @@ fun HabitItem(
 @Composable
 fun AddButton(navController: NavController) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
     ) {
         Button(
             onClick = { navController.navigate(Screens.Add.route) },
