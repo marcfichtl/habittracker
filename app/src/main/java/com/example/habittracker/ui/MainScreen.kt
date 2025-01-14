@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -49,6 +51,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habittracker.R
+import com.example.habittracker.data.Habit
+import com.example.habittracker.ui.theme.colorOptions
 import org.json.JSONObject
 import java.io.InputStreamReader
 import kotlin.random.Random
@@ -75,11 +79,17 @@ fun MainScreen(
             Column {
                 AddButton(navController)
                 Quote(context = LocalContext.current, modifier = Modifier.weight(1f))
-                HabitItem(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .height(100.dp)
-                )
+
+                LazyColumn {
+                    items(state.habits) { habit ->
+                        HabitItem(
+                            habit = habit,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .height(100.dp)
+                        )
+                    }
+                }
             }
             //TODO("Display the Habits on a List")
         }
@@ -129,14 +139,15 @@ fun getQuotesFromAssets(context: Context): List<Quote> {
 }
 
 @Composable
-fun HabitCard() {
+fun HabitCard(habit: Habit) {
     ListItem(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
-            .height(100.dp),
+            .height(100.dp)
+            .background(colorOptions[habit.color]),
         headlineContent = {
             Text(
-                text = "Run 1 km",
+                text = habit.name,
                 style = MaterialTheme.typography.titleMedium
             )
         },
@@ -191,12 +202,11 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitItem(
-    //emailMessage: EmailMessage,
+    habit: Habit,
     modifier: Modifier = Modifier,
     //onRemove: () -> Unit
 ) {
     val context = LocalContext.current
-    //val currentItem by rememberUpdatedState(emailMessage)
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
             when (it) {
@@ -222,7 +232,7 @@ fun HabitItem(
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState) },
         content = {
-            HabitCard()
+            HabitCard(habit)
         })
 }
 
