@@ -11,5 +11,8 @@ object ViewModelFactoryProvider {
             val application = this[APPLICATION_KEY] as HabitApplication
             DataViewModel(application.habitRepository)
         }
+        initializer {
+            QuoteViewModel()
+        }
     }
 }

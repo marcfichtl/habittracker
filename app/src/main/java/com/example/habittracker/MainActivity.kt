@@ -12,16 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.habittracker.ui.MainScreen
+import com.example.habittracker.ui.QuoteViewModel
 import com.example.habittracker.ui.theme.HabittrackerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val quotes = QuoteViewModel.getQuotesFromAssets(this)
+        val randomQuote = quotes.random()
         setContent {
             HabittrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
+                    MainScreen(modifier = Modifier.padding(innerPadding), randomQuote = randomQuote)
                 }
             }
         }

@@ -80,6 +80,7 @@ enum class Screens(val route: String) {
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
+    randomQuote: Quote,
     dataViewModel: DataViewModel = viewModel(factory = ViewModelFactoryProvider.Factory)
 ) {
     val navController = rememberNavController()
@@ -91,7 +92,7 @@ fun MainScreen(
         composable(Screens.Main.route) {
             Column {
                 AddButton(navController)
-                Quote(context = LocalContext.current, modifier = Modifier.weight(1f))
+                QuoteDisplay(randomQuote, modifier = Modifier.weight(1f))
 
                 LazyColumn {
                     items(state.habits) { habit ->
@@ -106,7 +107,6 @@ fun MainScreen(
                     }
                 }
             }
-            //TODO("Display the Habits on a List")
         }
         composable(Screens.Add.route) {
             AddScreen(navController, dataViewModel)
@@ -118,40 +118,19 @@ fun MainScreen(
     }
 }
 
-data class Quote(val id: Int, val text: String)
-
 @Composable
-fun Quote(context: Context, modifier: Modifier) {
-    val quotes = getQuotesFromAssets(context)
-    val randomQuote = quotes[Random.nextInt(quotes.size)]
+fun QuoteDisplay(quote: Quote, modifier: Modifier) {
     Box(
         modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
     ) {
         Text(
-            text = randomQuote.text,
+            text = quote.text,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             color = Primary
         )
     }
-}
-
-fun getQuotesFromAssets(context: Context): List<Quote> {
-    val inputStream = context.assets.open("quotes.json")
-    val reader = InputStreamReader(inputStream)
-    val quotesJson = reader.readText()
-    val quotesArray = JSONObject(quotesJson).getJSONArray("quotes")
-    val quotes = mutableListOf<Quote>()
-
-    for (i in 0 until quotesArray.length()) {
-        val quoteObject = quotesArray.getJSONObject(i)
-        val id = quoteObject.keys().next().toInt()
-        val text = quoteObject.getString(id.toString())
-        quotes.add(Quote(id, text))
-    }
-
-    return quotes
 }
 
 @Composable
