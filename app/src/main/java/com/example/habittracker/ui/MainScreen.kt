@@ -154,17 +154,30 @@ fun HabitCard(habit: Habit, navController: NavController) {
     val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
     val currentMonth = calendar.get(Calendar.MONTH)
     val currentYear = calendar.get(Calendar.YEAR)
+    val daysInMonthWithRepeatCalculated = (1..daysInMonth).count { day ->
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_MONTH, day)
+            set(Calendar.MONTH, currentMonth)
+            set(Calendar.YEAR, currentYear)
+        }
+        habit.repeat == 0 || calendar.get(Calendar.DAY_OF_WEEK) == habit.repeat
+    }
 
     val daysCompletedInMonth = habit.finished.count {
         val date = dateFormat.parse(dateFormat.format(it))
         date?.let {
             val habitCalendar = Calendar.getInstance().apply { time = it }
-            habitCalendar.get(Calendar.MONTH) == currentMonth && habitCalendar.get(Calendar.YEAR) == currentYear
+            habitCalendar.get(Calendar.MONTH) == currentMonth && habitCalendar.get(Calendar.YEAR) == currentYear &&
+                    (habit.repeat == 0 || habitCalendar.get(Calendar.DAY_OF_WEEK) == habit.repeat)
         } ?: false
     }
 
     val progress by animateFloatAsState(
-        targetValue = daysCompletedInMonth.toFloat() / daysInMonth,
+        targetValue = if (habit.repeat == 0) {
+            daysCompletedInMonth.toFloat() / daysInMonth //progress for daily habits, repeat == 0
+        } else {
+            daysCompletedInMonth.toFloat() / daysInMonthWithRepeatCalculated
+        },
         animationSpec = tween(durationMillis = 1000),
         label = "progress"
     )
@@ -202,7 +215,7 @@ fun HabitCard(habit: Habit, navController: NavController) {
             },
             supportingContent = {
                 Text(
-                    text = "$daysCompletedInMonth/$daysInMonth Days",
+                    text = "$daysCompletedInMonth/$daysInMonthWithRepeatCalculated Days",
                     fontSize = 14.sp,
                     color = Primary
                 )
