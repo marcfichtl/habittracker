@@ -39,11 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val colorOptions = listOf(
-    Color(0xFFf48b94),
-    Color(0xFF88c0a8),
-    Color(0xFF8493ca),
-    Color(0xFF91b4d3),
-    Color(0xFFfa9189),
+    Color(0xFFF48B94),
+    Color(0xFF88C0A8),
+    Color(0xFF8493CA),
+    Color(0xFF91B4D3),
+    Color(0xFFFA9189),
+    Color(0xFFE79D74),
+    Color(0xFFD1B15F),
     Color.DarkGray,
 )
 
