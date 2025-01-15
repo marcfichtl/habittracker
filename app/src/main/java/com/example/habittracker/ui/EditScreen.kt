@@ -90,39 +90,6 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     .weight(0.3f)
                     .fillMaxHeight()
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showDialogRepeat = true }
-                        .padding(bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Interval",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Primary
-                    )
-                    Row {
-                        Text(
-                            text = selectedRepeat,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Primary)
-                        Icon(
-                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = "Select Interval",
-                            tint = Primary)
-                    }
-
-                }
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(Color.Gray)
-                )
 
                 Column(
                     modifier = Modifier
@@ -162,11 +129,46 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     .fillMaxWidth()
                     .weight(0.7f)
                     .padding(top = 72.dp, start = 32.dp, end = 32.dp)
-            ) {
+            )
+            {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .clickable { showDialogRepeat = true }
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Interval",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Primary
+                    )
+                    Row {
+                        Text(
+                            text = selectedRepeat,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Primary
+                        )
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = "Select Interval",
+                            tint = Primary
+                        )
+                    }
+                }
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color.Gray)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, top = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -190,7 +192,6 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                         .height(1.dp)
                         .background(Color.Gray)
                 )
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
