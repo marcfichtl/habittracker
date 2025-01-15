@@ -4,12 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
@@ -46,22 +50,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.habittracker.data.Habit
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.platform.LocalFocusManager
 
 @Composable
 fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habitId: Int) {
     val habit by dataviewmodel.getHabitById(habitId)
         .collectAsStateWithLifecycle(initialValue = null)
+    val focusManager = LocalFocusManager.current
 
     habit?.let { nonNullHabit ->
         var name by remember { mutableStateOf(nonNullHabit.name) }
         var selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
         var showDialogColor by remember { mutableStateOf(false) }
-        var reminderChecked by remember {
-            mutableStateOf(nonNullHabit.reminder)
-        }
+        var showDeleteDialog by remember { mutableStateOf(false) }
+        var reminderChecked by remember { mutableStateOf(nonNullHabit.reminder) }
         var showDialogRepeat by remember { mutableStateOf(false) }
         var selectedRepeat by remember {
             mutableStateOf(
@@ -79,7 +84,14 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
             )
         }
 
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) { focusManager.clearFocus() }
+        ) {
             Box(
                 modifier = Modifier
                     .background(
@@ -90,7 +102,6 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     .weight(0.3f)
                     .fillMaxHeight()
             ) {
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -118,6 +129,10 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                             focusedIndicatorColor = Color.Transparent,
                             focusedTextColor = Primary,
                             unfocusedTextColor = Primary
+                        ),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = { focusManager.clearFocus() }
                         )
                     )
                 }
@@ -140,7 +155,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Interval",
+                        text = "Repeat",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Primary
@@ -154,7 +169,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                         )
                         Icon(
                             Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = "Select Interval",
+                            contentDescription = "Select Repeat",
                             tint = Primary
                         )
                     }
@@ -233,14 +248,8 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                 ) {
                     TextButton(
                         onClick = {
-                            dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
-                            navController.popBackStack()
-                        },
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp)),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent
-                        )
+                            showDeleteDialog = true
+                        }
                     ) {
                         Text(
                             "Delete",
@@ -248,12 +257,40 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                             fontWeight = FontWeight.Bold
                         )
                     }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteDialog = false },
+                            title = { Text("Confirm Delete") },
+                            text = { Text("Are you sure you want to delete this habit?") },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
+                                        navController.popBackStack()
+                                        showDeleteDialog = false
+                                    }
+                                ) {
+                                    Text("Delete")
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(
+                                    onClick = { showDeleteDialog = false }
+                                ) {
+                                    Text("Cancel")
+                                }
+                            }
+                        )
+                    }
+
                     Button(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .background(selectedColor),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent
+                            containerColor = Color.Transparent,
+                            contentColor = Color.Transparent
                         ),
                         onClick = {
                             dataviewmodel.updateHabit(
@@ -332,7 +369,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
 
                 AlertDialog(
                     onDismissRequest = { showDialogRepeat = false },
-                    title = { Text("Select Day Interval") },
+                    title = { Text("Repeat on") },
                     text = {
                         LazyColumn {
                             items(days) { day ->

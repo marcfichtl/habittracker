@@ -52,18 +52,26 @@ fun MainScreen(
 
     NavHost(
         navController, Screens.Main.route, modifier = modifier,
-        enterTransition = { slideIntoContainer(
-            AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
-        ) },
-        exitTransition = { slideOutOfContainer(
-            AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
-        ) },
-        popEnterTransition = { slideIntoContainer(
-            AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
-        ) },
-        popExitTransition = { slideOutOfContainer(
-            AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
-        ) }
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+            )
+        }
     ) {
         composable(Screens.Main.route) {
             Column {
@@ -124,7 +132,10 @@ fun AddButton(navController: NavController) {
         Button(
             onClick = { navController.navigate(Screens.Add.route) },
             modifier = Modifier.padding(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = Color.Transparent
+            )
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.plus),

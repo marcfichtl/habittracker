@@ -4,12 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,10 +21,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -43,7 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -59,8 +63,16 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var reminderChecked by remember { mutableStateOf(false) }
     var showDialogRepeat by remember { mutableStateOf(false) }
     var selectedRepeat by remember { mutableStateOf("every day") }
+    val focusManager = LocalFocusManager.current
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { focusManager.clearFocus() }
+    ) {
         Box(
             modifier = Modifier
                 .background(
@@ -98,6 +110,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         focusedIndicatorColor = Color.Transparent,
                         focusedTextColor = Primary,
                         unfocusedTextColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
                     )
                 )
             }
@@ -119,7 +135,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Interval",
+                    text = "Repeat",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Primary
@@ -129,11 +145,13 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         text = selectedRepeat,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Primary)
+                        color = Primary
+                    )
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Select Interval",
-                        tint = Primary)
+                        contentDescription = "Select Repeat",
+                        tint = Primary
+                    )
                 }
 
             }
@@ -223,7 +241,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         .clip(RoundedCornerShape(8.dp))
                         .background(selectedColor),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent
                     ),
                     onClick = {
                         dataviewmodel.onAddHabitClick(
@@ -290,11 +309,20 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
         }
 
         if (showDialogRepeat) {
-            val days = listOf("every day", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+            val days = listOf(
+                "every day",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+            )
 
             AlertDialog(
                 onDismissRequest = { showDialogRepeat = false },
-                title = { Text("Select Day Interval") },
+                title = { Text("Repeat on") },
                 text = {
                     LazyColumn {
                         items(days) { day ->

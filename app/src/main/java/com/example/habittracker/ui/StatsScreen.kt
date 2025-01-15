@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -142,8 +141,12 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                         if (finishedDays.any { date ->
                                 val finishedCalendar = Calendar.getInstance().apply { time = date }
                                 finishedCalendar.get(Calendar.DAY_OF_MONTH) == day + 1 &&
-                                finishedCalendar.get(Calendar.MONTH) == dayCalendar.get(Calendar.MONTH) &&
-                                finishedCalendar.get(Calendar.YEAR) == dayCalendar.get(Calendar.YEAR)
+                                        finishedCalendar.get(Calendar.MONTH) == dayCalendar.get(
+                                    Calendar.MONTH
+                                ) &&
+                                        finishedCalendar.get(Calendar.YEAR) == dayCalendar.get(
+                                    Calendar.YEAR
+                                )
                             }) {
                             dayColor = colorOptions[nonNullHabit.color]
                             textColor = Primary
