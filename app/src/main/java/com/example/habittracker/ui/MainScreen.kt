@@ -113,7 +113,7 @@ fun MainScreen(
                         HabitItem(
                             habit = habit,
                             modifier = Modifier
-                                .padding(16.dp)
+                                .padding(8.dp)
                                 .height(100.dp),
                             navController,
                             dataViewModel
@@ -250,6 +250,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
                 0xFFff6666
             else 0xFF33cc33
         )
+
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
 

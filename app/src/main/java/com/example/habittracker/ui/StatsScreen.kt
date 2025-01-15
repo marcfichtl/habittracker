@@ -45,7 +45,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
         val startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
         val daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
         val finishedDays: List<Date> = nonNullHabit.finished
-        var selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
+        val selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
         val dayLabels = listOf("S", "M", "T", "W", "T", "F", "S")
 
         Column {
@@ -135,7 +135,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                                 calendar.get(Calendar.DAY_OF_MONTH) == day + 1
                             }) {
                             dayColor = colorOptions[nonNullHabit.color]
-                            textColor = Color.White
+                            textColor = Primary
                         }
 
 
