@@ -54,6 +54,8 @@ import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontFamily
+import com.example.habittracker.ui.theme.OutfitFontFamily
 
 @Composable
 fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habitId: Int) {
@@ -252,9 +254,11 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                         }
                     ) {
                         Text(
-                            "Delete",
+                            text = "Delete",
                             color = Color(0xFFEB4E3D),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            fontFamily = OutfitFontFamily
                         )
                     }
 
@@ -315,11 +319,13 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                         },
                     ) {
                         Text(
-                            "Save",
-                            color = Primary
+                            text = "Save",
+                            color = Primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            fontFamily = OutfitFontFamily
                         )
                     }
-
                 }
             }
 

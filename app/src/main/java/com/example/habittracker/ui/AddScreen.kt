@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habittracker.data.Habit
+import com.example.habittracker.ui.theme.OutfitFontFamily
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 
@@ -234,7 +235,13 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         navController.popBackStack()
                     }
                 ) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        color = Primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        fontFamily = OutfitFontFamily
+                    )
                 }
                 Button(
                     modifier = Modifier
@@ -270,7 +277,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 ) {
                     Text(
                         "Save",
-                        color = Primary
+                        color = Primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        fontFamily = OutfitFontFamily
                     )
                 }
             }
