@@ -13,5 +13,6 @@ data class HabitEntity(
     val name: String,
     val color: Int,
     val reminder: Boolean,
-    val finished: List<Date> = emptyList()
+    val finished: List<Date> = emptyList(),
+    val repeat: Int
 )

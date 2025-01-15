@@ -48,6 +48,13 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
         val selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
         val dayLabels = listOf("S", "M", "T", "W", "T", "F", "S")
 
+        val repeatingDayCount = (1..daysInMonth).count { day ->
+            val dayCalendar = Calendar.getInstance().apply {
+                set(Calendar.DAY_OF_MONTH, day)
+            }
+            nonNullHabit.repeat == 0 || dayCalendar.get(Calendar.DAY_OF_WEEK) == nonNullHabit.repeat
+        }
+
         Column {
             Box(
                 modifier = Modifier
@@ -70,7 +77,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                         fontSize = 32.sp,
                     )
                     Text(
-                        text = "You achieved your goal on ${finishedDays.size} out of $daysInMonth days this month",
+                        text = "You achieved your goal on ${finishedDays.size} out of $repeatingDayCount days this month",
                         modifier = Modifier
                             .padding(24.dp),
                         color = Primary,
@@ -129,10 +136,14 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     items(daysInMonth) { day ->
                         var dayColor = Color.DarkGray
                         var textColor = Color.Gray
-                        val calendar = Calendar.getInstance()
+                        val dayCalendar = Calendar.getInstance().apply {
+                            set(Calendar.DAY_OF_MONTH, day + 1)
+                        }
                         if (finishedDays.any { date ->
-                                calendar.time = date
-                                calendar.get(Calendar.DAY_OF_MONTH) == day + 1
+                                val finishedCalendar = Calendar.getInstance().apply { time = date }
+                                finishedCalendar.get(Calendar.DAY_OF_MONTH) == day + 1 &&
+                                finishedCalendar.get(Calendar.MONTH) == dayCalendar.get(Calendar.MONTH) &&
+                                finishedCalendar.get(Calendar.YEAR) == dayCalendar.get(Calendar.YEAR)
                             }) {
                             dayColor = colorOptions[nonNullHabit.color]
                             textColor = Primary

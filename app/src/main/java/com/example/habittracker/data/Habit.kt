@@ -7,5 +7,6 @@ data class Habit (
     val name: String,
     val color: Int,
     val reminder: Boolean,
-    val finished: List<Date>
+    val finished: List<Date>,
+    val repeat: Int
 )

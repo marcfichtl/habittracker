@@ -14,14 +14,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -48,8 +55,10 @@ import com.example.habittracker.ui.theme.colorOptions
 fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var name by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(colorOptions[0]) }
-    var showDialog by remember { mutableStateOf(false) }
+    var showDialogColor by remember { mutableStateOf(false) }
     var reminderChecked by remember { mutableStateOf(false) }
+    var showDialogRepeat by remember { mutableStateOf(false) }
+    var selectedRepeat by remember { mutableStateOf("every day") }
 
     Column {
         Box(
@@ -104,7 +113,41 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .clickable { showDialogRepeat = true }
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Interval",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
+                )
+                Row {
+                    Text(
+                        text = selectedRepeat,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Primary)
+                    Icon(
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = "Select Interval",
+                        tint = Primary)
+                }
+
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color.Gray)
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp, bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -119,7 +162,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         .size(50.dp)
                         .clip(RoundedCornerShape(50))
                         .background(selectedColor)
-                        .clickable { showDialog = true }
+                        .clickable { showDialogColor = true }
                 )
             }
             Spacer(
@@ -189,7 +232,18 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                                 name = name,
                                 color = colorOptions.indexOf(selectedColor),
                                 reminder = reminderChecked,
-                                finished = emptyList()
+                                finished = emptyList(),
+                                repeat = when (selectedRepeat) {
+                                    "every day" -> 0
+                                    "sunday" -> 1
+                                    "monday" -> 2
+                                    "tuesday" -> 3
+                                    "wednesday" -> 4
+                                    "thursday" -> 5
+                                    "friday" -> 6
+                                    "saturday" -> 7
+                                    else -> 0
+                                }
                             )
                         )
                         navController.popBackStack()
@@ -203,9 +257,9 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
             }
         }
 
-        if (showDialog) {
+        if (showDialogColor) {
             AlertDialog(
-                onDismissRequest = { showDialog = false },
+                onDismissRequest = { showDialogColor = false },
                 title = { Text("Choose Color") },
                 text = {
                     LazyVerticalGrid(
@@ -221,14 +275,44 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                                     .background(colorOptions[index])
                                     .clickable {
                                         selectedColor = colorOptions[index]
-                                        showDialog = false
+                                        showDialogColor = false
                                     },
                             )
                         }
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = { showDialog = false }) {
+                    TextButton(onClick = { showDialogColor = false }) {
+                        Text("Close")
+                    }
+                }
+            )
+        }
+
+        if (showDialogRepeat) {
+            val days = listOf("every day", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+
+            AlertDialog(
+                onDismissRequest = { showDialogRepeat = false },
+                title = { Text("Select Day Interval") },
+                text = {
+                    LazyColumn {
+                        items(days) { day ->
+                            Text(
+                                text = day,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedRepeat = day
+                                        showDialogRepeat = false
+                                    }
+                                    .padding(16.dp)
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showDialogRepeat = false }) {
                         Text("Close")
                     }
                 }
