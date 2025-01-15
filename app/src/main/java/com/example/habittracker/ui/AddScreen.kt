@@ -4,12 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -44,12 +48,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habittracker.data.Habit
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
+import androidx.compose.ui.platform.LocalFocusManager
 
 @Composable
 fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
@@ -59,8 +65,16 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var reminderChecked by remember { mutableStateOf(false) }
     var showDialogRepeat by remember { mutableStateOf(false) }
     var selectedRepeat by remember { mutableStateOf("every day") }
+    val focusManager = LocalFocusManager.current
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { focusManager.clearFocus() }
+    ) {
         Box(
             modifier = Modifier
                 .background(
@@ -98,6 +112,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         focusedIndicatorColor = Color.Transparent,
                         focusedTextColor = Primary,
                         unfocusedTextColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
                     )
                 )
             }
