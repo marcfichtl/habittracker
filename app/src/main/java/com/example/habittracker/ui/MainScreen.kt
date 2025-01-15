@@ -254,6 +254,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
                 0xFFff6666
             else 0xFF33cc33
         )
+
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
 
@@ -314,9 +315,27 @@ fun HabitItem(
                 if (isFinishedToday) {
                     dataViewModel.unmarkHabitAsFinished(habit.id)
                     Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
-                } else {
+                } else if (habit.repeat == 0 || Calendar.getInstance()
+                        .get(Calendar.DAY_OF_WEEK) == habit.repeat
+                ) {
                     dataViewModel.markHabitsAsFinished(habit.id)
                     Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        context, "Habit is set for repeating on ${
+                            when (habit.repeat) {
+                                1 -> "Sunday"
+                                2 -> "Monday"
+                                3 -> "Tuesday"
+                                4 -> "Wednesday"
+                                5 -> "Thursday"
+                                6 -> "Friday"
+                                7 -> "Saturday"
+                                else -> "Unknown"
+
+                            }
+                        }", Toast.LENGTH_SHORT
+                    ).show()
                 }
                 return@rememberSwipeToDismissBoxState false
             }
