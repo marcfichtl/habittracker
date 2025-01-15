@@ -48,6 +48,13 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
         var selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
         val dayLabels = listOf("S", "M", "T", "W", "T", "F", "S")
 
+        val repeatingDayCount = (1..daysInMonth).count { day ->
+            val dayCalendar = Calendar.getInstance().apply {
+                set(Calendar.DAY_OF_MONTH, day)
+            }
+            nonNullHabit.repeat == 0 || dayCalendar.get(Calendar.DAY_OF_WEEK) == nonNullHabit.repeat
+        }
+
         Column {
             Box(
                 modifier = Modifier
@@ -70,7 +77,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                         fontSize = 32.sp,
                     )
                     Text(
-                        text = "You achieved your goal on ${finishedDays.size} out of $daysInMonth days this month",
+                        text = "You achieved your goal on ${finishedDays.size} out of $repeatingDayCount days this month",
                         modifier = Modifier
                             .padding(24.dp),
                         color = Primary,
