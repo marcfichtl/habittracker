@@ -65,6 +65,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
         var name by remember { mutableStateOf(nonNullHabit.name) }
         var selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
         var showDialogColor by remember { mutableStateOf(false) }
+        var showDeleteDialog by remember { mutableStateOf(false) }
         var reminderChecked by remember { mutableStateOf(nonNullHabit.reminder) }
         var showDialogRepeat by remember { mutableStateOf(false) }
         var selectedRepeat by remember {
@@ -247,8 +248,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                 ) {
                     TextButton(
                         onClick = {
-                            dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
-                            navController.popBackStack()
+                            showDeleteDialog = true
                         }
                     ) {
                         Text(
@@ -257,6 +257,33 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                             fontWeight = FontWeight.Bold
                         )
                     }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteDialog = false },
+                            title = { Text("Confirm Delete") },
+                            text = { Text("Are you sure you want to delete this habit?") },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
+                                        navController.popBackStack()
+                                        showDeleteDialog = false
+                                    }
+                                ) {
+                                    Text("Delete")
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(
+                                    onClick = { showDeleteDialog = false }
+                                ) {
+                                    Text("Cancel")
+                                }
+                            }
+                        )
+                    }
+
                     Button(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
