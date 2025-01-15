@@ -137,7 +137,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Interval",
+                    text = "Repeat",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Primary
@@ -151,7 +151,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                     )
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Select Interval",
+                        contentDescription = "Select Repeat",
                         tint = Primary
                     )
                 }
@@ -324,7 +324,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
 
             AlertDialog(
                 onDismissRequest = { showDialogRepeat = false },
-                title = { Text("Select Day Interval") },
+                title = { Text("Repeat on") },
                 text = {
                     LazyColumn {
                         items(days) { day ->
