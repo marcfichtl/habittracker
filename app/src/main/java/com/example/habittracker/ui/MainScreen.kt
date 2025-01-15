@@ -1,10 +1,15 @@
 package com.example.habittracker.ui
 
-import android.content.Context
-import android.graphics.drawable.Drawable
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,18 +27,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
@@ -44,7 +45,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,13 +67,10 @@ import com.example.habittracker.data.Habit
 import com.example.habittracker.ui.theme.Background
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
-import org.json.JSONObject
-import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.random.Random
 
 enum class Screens(val route: String) {
     Main("Main"),
@@ -92,7 +89,19 @@ fun MainScreen(
     val state by dataViewModel.habitsUiState.collectAsStateWithLifecycle()
 
     NavHost(
-        navController, Screens.Main.route, modifier = modifier
+        navController, Screens.Main.route, modifier = modifier,
+        enterTransition = { slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+        ) },
+        exitTransition = { slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+        ) },
+        popEnterTransition = { slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+        ) },
+        popExitTransition = { slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+        ) }
     ) {
         composable(Screens.Main.route) {
             Column {
@@ -113,7 +122,7 @@ fun MainScreen(
                 }
             }
         }
-        composable(Screens.Add.route) {
+        composable(Screens.Add.route,) {
             AddScreen(navController, dataViewModel)
         }
         composable("Edit/{habitId}") { backStackEntry ->
