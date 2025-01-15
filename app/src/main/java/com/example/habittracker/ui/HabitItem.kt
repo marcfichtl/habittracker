@@ -1,5 +1,6 @@
 package com.example.habittracker.ui
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -81,31 +82,7 @@ fun HabitItem(
             }
 
             SwipeToDismissBoxValue.EndToStart -> {
-                if (isFinishedToday) {
-                    dataViewModel.unmarkHabitAsFinished(habit.id)
-                    Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
-                } else if (habit.repeat == 0 || Calendar.getInstance()
-                        .get(Calendar.DAY_OF_WEEK) == habit.repeat
-                ) {
-                    dataViewModel.markHabitsAsFinished(habit.id)
-                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(
-                        context, "Habit is set for repeating on ${
-                            when (habit.repeat) {
-                                1 -> "Sunday"
-                                2 -> "Monday"
-                                3 -> "Tuesday"
-                                4 -> "Wednesday"
-                                5 -> "Thursday"
-                                6 -> "Friday"
-                                7 -> "Saturday"
-                                else -> "Unknown"
-
-                            }
-                        }", Toast.LENGTH_SHORT
-                    ).show()
-                }
+                navController.navigate("stats/${habit.id}")
                 return@rememberSwipeToDismissBoxState false
             }
 
@@ -119,12 +96,18 @@ fun HabitItem(
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState, isFinishedToday) },
         content = {
-            HabitCard(habit, navController)
+            HabitCard(habit, navController, dataViewModel, isFinishedToday, context)
         })
 }
 
 @Composable
-fun HabitCard(habit: Habit, navController: NavController) {
+fun HabitCard(
+    habit: Habit,
+    navController: NavController,
+    dataViewModel: DataViewModel,
+    isFinishedToday: Boolean,
+    context: Context
+) {
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val todayString = dateFormat.format(today)
@@ -166,7 +149,32 @@ fun HabitCard(habit: Habit, navController: NavController) {
             .height(100.dp)
             .background(Color.DarkGray)
             .clickable {
-                navController.navigate("stats/${habit.id}")
+
+                if (isFinishedToday) {
+                    dataViewModel.unmarkHabitAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                } else if (habit.repeat == 0 || Calendar.getInstance()
+                        .get(Calendar.DAY_OF_WEEK) == habit.repeat
+                ) {
+                    dataViewModel.markHabitsAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        context, "Habit is set for repeating on ${
+                            when (habit.repeat) {
+                                1 -> "Sunday"
+                                2 -> "Monday"
+                                3 -> "Tuesday"
+                                4 -> "Wednesday"
+                                5 -> "Thursday"
+                                6 -> "Friday"
+                                7 -> "Saturday"
+                                else -> "Unknown"
+
+                            }
+                        }", Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
     ) {
         Box(
@@ -227,11 +235,7 @@ fun HabitCard(habit: Habit, navController: NavController) {
 fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boolean) {
     val color = when (dismissState.dismissDirection) {
         SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
-        SwipeToDismissBoxValue.EndToStart -> Color(
-            if (isFinishedToday)
-                0xFFeB4e3d
-            else 0xFF33cc33
-        )
+        SwipeToDismissBoxValue.EndToStart -> Color(0xFFF8F8F8)
 
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
@@ -249,16 +253,10 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
             Icons.Default.Edit, contentDescription = "edit", tint = Background
         )
         Spacer(modifier = Modifier)
-        if (isFinishedToday) {
-            Icon(
-                Icons.Default.Clear, contentDescription = "clear", tint = Background
-            )
-        } else {
-            Icon(
-                painter = painterResource(R.drawable.check),
-                contentDescription = "check",
-                tint = Background
-            )
-        }
+        Icon(
+            painter = painterResource(id = R.drawable.chart),
+            contentDescription = "chart",
+            tint = Background
+        )
     }
 }
