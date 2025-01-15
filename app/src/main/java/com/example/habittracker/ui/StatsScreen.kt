@@ -136,10 +136,14 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     items(daysInMonth) { day ->
                         var dayColor = Color.DarkGray
                         var textColor = Color.Gray
-                        val calendar = Calendar.getInstance()
+                        val dayCalendar = Calendar.getInstance().apply {
+                            set(Calendar.DAY_OF_MONTH, day + 1)
+                        }
                         if (finishedDays.any { date ->
-                                calendar.time = date
-                                calendar.get(Calendar.DAY_OF_MONTH) == day + 1
+                                val finishedCalendar = Calendar.getInstance().apply { time = date }
+                                finishedCalendar.get(Calendar.DAY_OF_MONTH) == day + 1 &&
+                                finishedCalendar.get(Calendar.MONTH) == dayCalendar.get(Calendar.MONTH) &&
+                                finishedCalendar.get(Calendar.YEAR) == dayCalendar.get(Calendar.YEAR)
                             }) {
                             dayColor = colorOptions[nonNullHabit.color]
                             textColor = Color.White
