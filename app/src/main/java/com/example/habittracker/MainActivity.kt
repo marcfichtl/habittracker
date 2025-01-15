@@ -9,10 +9,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.habittracker.ui.MainScreen
+import com.example.habittracker.ui.PreferenceManager
 import com.example.habittracker.ui.QuoteViewModel
+import com.example.habittracker.ui.TutorialScreen
 import com.example.habittracker.ui.theme.HabittrackerTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,11 +28,25 @@ class MainActivity : ComponentActivity() {
         val quotes = QuoteViewModel.getQuotesFromAssets(this)
         val randomQuote = quotes.random()
         setContent {
-            HabittrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding), randomQuote = randomQuote)
+            val context = LocalContext.current
+            val showTutorial = remember { mutableStateOf(PreferenceManager.isFirstLaunch(context)) }
+
+            LaunchedEffect(Unit) {
+                if(showTutorial.value) {
+                    PreferenceManager.setFirstLaunch(context, false)
                 }
             }
+
+            if(showTutorial.value) {
+                TutorialScreen ( onFinish = { showTutorial.value = false } )
+            } else {
+                HabittrackerTheme {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        MainScreen(modifier = Modifier.padding(innerPadding), randomQuote = randomQuote)
+                    }
+                }
+            }
+
         }
     }
 }
