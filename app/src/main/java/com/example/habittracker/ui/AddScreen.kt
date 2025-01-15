@@ -129,11 +129,13 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         text = selectedRepeat,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Primary)
+                        color = Primary
+                    )
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = "Select Interval",
-                        tint = Primary)
+                        tint = Primary
+                    )
                 }
 
             }
@@ -223,7 +225,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         .clip(RoundedCornerShape(8.dp))
                         .background(selectedColor),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent
                     ),
                     onClick = {
                         dataviewmodel.onAddHabitClick(
@@ -290,7 +293,16 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
         }
 
         if (showDialogRepeat) {
-            val days = listOf("every day", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+            val days = listOf(
+                "every day",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+            )
 
             AlertDialog(
                 onDismissRequest = { showDialogRepeat = false },

@@ -124,7 +124,7 @@ fun AddButton(navController: NavController) {
         Button(
             onClick = { navController.navigate(Screens.Add.route) },
             modifier = Modifier.padding(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = Color.Transparent)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.plus),

@@ -229,7 +229,7 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
         SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
         SwipeToDismissBoxValue.EndToStart -> Color(
             if (isFinishedToday)
-                0xFFff6666
+                0xFFeB4e3d
             else 0xFF33cc33
         )
 
