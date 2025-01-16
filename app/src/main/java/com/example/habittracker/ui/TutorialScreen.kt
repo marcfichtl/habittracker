@@ -2,12 +2,16 @@ package com.example.habittracker.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,38 +38,67 @@ import kotlinx.coroutines.launch
 fun TutorialScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
     val images = listOf(R.drawable.tutorial1, R.drawable.tutorial2, R.drawable.tutorial3)
+    val tutorialText = listOf(
+        "Tap a habit to mark it as done",
+        "Swipe right to edit a habit",
+        "Swipe left to see statistics of a habit"
+    )
     val pagerState = rememberPagerState(pageCount = { images.size })
 
+
     Column(
-        modifier = Modifier.fillMaxSize().background(Color(0xFF121212)),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF121212)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(Modifier.weight(0.5f))
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f).align(Alignment.CenterHorizontally)
         ) { page ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(42.dp),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Tap a habit to mark it as done",
+                    text = tutorialText[page],
                     color = Color.White,
-                    fontSize = 18.sp,
-                    fontFamily = OutfitFontFamily
+                    fontSize = 28.sp,
+                    fontFamily = OutfitFontFamily,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
                 Image(
                     painter = painterResource(id = images[page]),
                     contentDescription = "tutorial",
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
             }
 
         }
 
-
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(images.size) { index ->
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(12.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(if (pagerState.currentPage == index) Primary else Color.Gray)
+                )
+            }
+        }
 
         Row(
             modifier = Modifier
@@ -110,5 +143,6 @@ fun TutorialScreen(onFinish: () -> Unit) {
                 )
             }
         }
+        Spacer(Modifier.weight(0.5f))
     }
 }
