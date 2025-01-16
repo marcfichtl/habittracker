@@ -1,6 +1,5 @@
 package com.example.habittracker.ui
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -82,7 +81,31 @@ fun HabitItem(
             }
 
             SwipeToDismissBoxValue.EndToStart -> {
-                navController.navigate("stats/${habit.id}")
+                if (isFinishedToday) {
+                    dataViewModel.unmarkHabitAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                } else if (habit.repeat == 0 || Calendar.getInstance()
+                        .get(Calendar.DAY_OF_WEEK) == habit.repeat
+                ) {
+                    dataViewModel.markHabitsAsFinished(habit.id)
+                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        context, "Habit is set for repeating on ${
+                            when (habit.repeat) {
+                                1 -> "Sunday"
+                                2 -> "Monday"
+                                3 -> "Tuesday"
+                                4 -> "Wednesday"
+                                5 -> "Thursday"
+                                6 -> "Friday"
+                                7 -> "Saturday"
+                                else -> "Unknown"
+
+                            }
+                        }", Toast.LENGTH_SHORT
+                    ).show()
+                }
                 return@rememberSwipeToDismissBoxState false
             }
 
@@ -96,18 +119,13 @@ fun HabitItem(
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState, isFinishedToday) },
         content = {
-            HabitCard(habit, navController, dataViewModel, isFinishedToday, context)
-        })
+            HabitCard(habit, navController)
+        }
+    )
 }
 
 @Composable
-fun HabitCard(
-    habit: Habit,
-    navController: NavController,
-    dataViewModel: DataViewModel,
-    isFinishedToday: Boolean,
-    context: Context
-) {
+fun HabitCard(habit: Habit, navController: NavController) {
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val todayString = dateFormat.format(today)
@@ -149,32 +167,7 @@ fun HabitCard(
             .height(100.dp)
             .background(Color.DarkGray)
             .clickable {
-
-                if (isFinishedToday) {
-                    dataViewModel.unmarkHabitAsFinished(habit.id)
-                    Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
-                } else if (habit.repeat == 0 || Calendar.getInstance()
-                        .get(Calendar.DAY_OF_WEEK) == habit.repeat
-                ) {
-                    dataViewModel.markHabitsAsFinished(habit.id)
-                    Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(
-                        context, "Habit is set for repeating on ${
-                            when (habit.repeat) {
-                                1 -> "Sunday"
-                                2 -> "Monday"
-                                3 -> "Tuesday"
-                                4 -> "Wednesday"
-                                5 -> "Thursday"
-                                6 -> "Friday"
-                                7 -> "Saturday"
-                                else -> "Unknown"
-
-                            }
-                        }", Toast.LENGTH_SHORT
-                    ).show()
-                }
+                navController.navigate("stats/${habit.id}")
             }
     ) {
         Box(
@@ -219,14 +212,15 @@ fun HabitCard(
                 } else {
                     Icon(
                         painter = painterResource(id = R.drawable.circle),
-                        contentDescription = "checkmark icon",
+                        contentDescription = "circle icon",
                         tint = Primary,
                         modifier = Modifier
                             .clip(CircleShape)
                             .padding(10.dp)
                     )
                 }
-            })
+            }
+        )
     }
 }
 
@@ -234,8 +228,12 @@ fun HabitCard(
 @Composable
 fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boolean) {
     val color = when (dismissState.dismissDirection) {
-        SwipeToDismissBoxValue.StartToEnd -> Color(0xFFF8F8F8)
-        SwipeToDismissBoxValue.EndToStart -> Color(0xFFF8F8F8)
+        SwipeToDismissBoxValue.StartToEnd -> Primary
+        SwipeToDismissBoxValue.EndToStart -> Color(
+            if (isFinishedToday)
+                0xFFF6A5C0
+            else 0xFFA6E3A1
+        )
 
         SwipeToDismissBoxValue.Settled -> Color.Transparent
     }
@@ -255,10 +253,18 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
             tint = Background
         )
         Spacer(modifier = Modifier)
-        Icon(
-            painter = painterResource(id = R.drawable.chart),
-            contentDescription = "chart",
-            tint = Background
-        )
+        if (isFinishedToday) {
+            Icon(
+                Icons.Default.Clear,
+                contentDescription = "clear",
+                tint = Background
+            )
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.check),
+                contentDescription = "check",
+                tint = Background
+            )
+        }
     }
 }

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DataViewModel (val repository: HabitRepository) : ViewModel() {
+class DataViewModel(val repository: HabitRepository) : ViewModel() {
     private val _habitsUiState = MutableStateFlow(HabitsUiState(emptyList()))
     val habitsUiState = _habitsUiState
 
@@ -66,7 +66,8 @@ class DataViewModel (val repository: HabitRepository) : ViewModel() {
             val habit = repository.getHabitById(habitId).first()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             val todayString = dateFormat.format(Date())
-            val updatedFinishedDates = habit.finished.filter { dateFormat.format(it) != todayString }
+            val updatedFinishedDates =
+                habit.finished.filter { dateFormat.format(it) != todayString }
             repository.updateHabit(habit.copy(finished = updatedFinishedDates))
         }
     }

@@ -45,7 +45,6 @@ fun TutorialScreen(onFinish: () -> Unit) {
     )
     val pagerState = rememberPagerState(pageCount = { images.size })
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
