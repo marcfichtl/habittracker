@@ -1,5 +1,6 @@
 package com.example.habittracker.ui
 
+import android.security.ConfirmationPrompt
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -38,7 +39,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -64,6 +67,7 @@ fun HabitItem(
     //onHabitChecked: () -> Unit
 ) {
     val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
     val today = remember { Date() }
     val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
     val todayString = remember { dateFormat.format(today) }
@@ -83,11 +87,13 @@ fun HabitItem(
             SwipeToDismissBoxValue.EndToStart -> {
                 if (isFinishedToday) {
                     dataViewModel.unmarkHabitAsFinished(habit.id)
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
                 } else if (habit.repeat == 0 || Calendar.getInstance()
                         .get(Calendar.DAY_OF_WEEK) == habit.repeat
                 ) {
                     dataViewModel.markHabitsAsFinished(habit.id)
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(
@@ -205,6 +211,7 @@ fun HabitCard(
             },
             trailingContent = {
                 val context = LocalContext.current
+                val haptic = LocalHapticFeedback.current
                 val today = remember { Date() }
                 val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
                 val todayString = remember { dateFormat.format(today) }
@@ -220,9 +227,11 @@ fun HabitCard(
                         .clickable {
                             if (isFinishedToday) {
                                 dataViewModel.unmarkHabitAsFinished(habit.id)
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
                             } else {
                                 dataViewModel.markHabitsAsFinished(habit.id)
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
                             }
                         }
