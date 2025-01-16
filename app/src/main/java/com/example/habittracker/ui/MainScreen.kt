@@ -1,6 +1,7 @@
 package com.example.habittracker.ui
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,22 +55,26 @@ fun MainScreen(
         navController, Screens.Main.route, modifier = modifier,
         enterTransition = {
             slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+                AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
             )
         },
         exitTransition = {
             slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Down, tween(500)
+                AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
             )
         },
         popEnterTransition = {
             slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
             )
         },
         popExitTransition = {
             slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Up, tween(500)
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
             )
         }
     ) {

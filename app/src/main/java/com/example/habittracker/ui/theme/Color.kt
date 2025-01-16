@@ -26,5 +26,5 @@ val colorOptions = listOf(
     Color(0xFFFA9189),
     Color(0xFFE79D74),
     Color(0xFFD1B15F),
-    Color.DarkGray,
+    Color(0xFFB7A9C9),
 )
