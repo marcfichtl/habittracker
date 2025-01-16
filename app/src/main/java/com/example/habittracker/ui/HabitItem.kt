@@ -250,7 +250,9 @@ fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boo
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
-            Icons.Default.Edit, contentDescription = "edit", tint = Background
+            painter = painterResource(id = R.drawable.edit),
+            contentDescription = "edit",
+            tint = Background
         )
         Spacer(modifier = Modifier)
         Icon(
