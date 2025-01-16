@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.habittracker.ui.theme.OutfitFontFamily
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 import java.util.Calendar
@@ -177,10 +178,11 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                 }
             ) {
                 Text(
-                    "Back",
+                    text = "Back",
                     color = Primary,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontFamily = OutfitFontFamily
                 )
             }
 
