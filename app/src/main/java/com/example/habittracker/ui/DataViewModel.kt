@@ -71,4 +71,8 @@ class DataViewModel(val repository: HabitRepository) : ViewModel() {
             repository.updateHabit(habit.copy(finished = updatedFinishedDates))
         }
     }
+
+    fun getFinishedHabitsByDate(date: String): Flow<List<Habit>> {
+        return repository.getFinishedHabitsByDate(date)
+    }
 }

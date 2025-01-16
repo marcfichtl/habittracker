@@ -40,7 +40,8 @@ enum class Screens(val route: String) {
     Main("Main"),
     Add("Add"),
     Edit("edit/{habitId}"),
-    Stats("stats/{habitId}")
+    Stats("stats/{habitId}"),
+    DayOverview("day_overview/{formattedDate}")
 }
 
 @Composable
@@ -123,6 +124,10 @@ fun MainScreen(
         composable(Screens.Stats.route) { backStackEntry ->
             val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
             StatsScreen(navController, dataViewModel, habitId)
+        }
+        composable(Screens.DayOverview.route) { backStackEntry ->
+            val formattedDate = backStackEntry.arguments?.getString("formattedDate") ?: ""
+            DayOverviewScreen(formattedDate, dataViewModel)
         }
     }
 }

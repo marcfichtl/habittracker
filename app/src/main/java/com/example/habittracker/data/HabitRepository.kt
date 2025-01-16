@@ -63,5 +63,17 @@ class HabitRepository (private val habitDao: HabitDao) {
         habitDao.updateFinished(id, finished)
     }
 
+    fun getFinishedHabitsByDate(date: String) = habitDao.getFinishedHabitsByDate(date).map { list ->
+        list.map { habitEntity ->
+            Habit(
+                habitEntity._id,
+                habitEntity.name,
+                habitEntity.color,
+                habitEntity.reminder,
+                habitEntity.finished,
+                habitEntity.repeat
+            )
+        }
+    }
 }
 

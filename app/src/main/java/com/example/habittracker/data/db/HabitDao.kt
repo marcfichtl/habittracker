@@ -31,4 +31,7 @@ interface HabitDao {
 
     @Query ("UPDATE habits SET finished = :finished WHERE _id = :id")
     suspend fun updateFinished(id: Int, finished: List<Date>)
+
+    @Query ("SELECT * FROM habits WHERE finished LIKE :date")
+    fun getFinishedHabitsByDate(date: String): Flow<List<HabitEntity>>
 }
