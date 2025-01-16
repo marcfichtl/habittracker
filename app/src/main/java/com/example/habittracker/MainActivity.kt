@@ -32,17 +32,20 @@ class MainActivity : ComponentActivity() {
             val showTutorial = remember { mutableStateOf(PreferenceManager.isFirstLaunch(context)) }
 
             LaunchedEffect(Unit) {
-                if(showTutorial.value) {
+                if (showTutorial.value) {
                     PreferenceManager.setFirstLaunch(context, false)
                 }
             }
 
-            if(showTutorial.value) {
-                TutorialScreen ( onFinish = { showTutorial.value = false } )
-            } else {
-                HabittrackerTheme {
+            HabittrackerTheme {
+                if (showTutorial.value) {
+                    TutorialScreen(onFinish = { showTutorial.value = false })
+                } else {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        MainScreen(modifier = Modifier.padding(innerPadding), randomQuote = randomQuote)
+                        MainScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            randomQuote = randomQuote
+                        )
                     }
                 }
             }
