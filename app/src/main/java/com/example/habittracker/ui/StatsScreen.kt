@@ -1,6 +1,7 @@
 package com.example.habittracker.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,12 +24,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.habittracker.R
+import com.example.habittracker.ui.theme.Background
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 import java.util.Calendar
@@ -67,14 +72,33 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
             ) {
                 Column {
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = nonNullHabit.name,
+                    Row(
                         modifier = Modifier
-                            .padding(start = 24.dp, end = 24.dp),
-                        color = Primary,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 32.sp,
-                    )
+                        .padding(start = 24.dp, end = 24.dp)
+                    ) {
+                        Text(
+                            text = nonNullHabit.name,
+                            modifier = Modifier
+                                .padding(end = 8.dp),
+                            color = Primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 32.sp,
+                        )
+                        Box(
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .size(24.dp)
+                                .clickable {
+                                    navController.navigate("edit/${nonNullHabit.id}")
+                                }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.edit),
+                                contentDescription = "edit",
+                                tint = Primary,
+                            )
+                        }
+                    }
                     Text(
                         text = "You achieved your goal on ${finishedDays.size} out of $repeatingDayCount days this month",
                         modifier = Modifier
