@@ -34,6 +34,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habittracker.R
 import com.example.habittracker.ui.theme.Primary
+import java.util.Calendar
 
 enum class Screens(val route: String) {
     Main("Main"),
@@ -80,7 +81,22 @@ fun MainScreen(
     ) {
         composable(Screens.Main.route) {
             Column {
-                AddButton(navController)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    val calendar = Calendar.getInstance()
+                    Text(
+                        text = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, java.util.Locale.US) ?: "Today",
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .align(Alignment.CenterVertically),
+                        color = Primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp
+                    )
+                    AddButton(navController)
+                }
                 QuoteDisplay(randomQuote, modifier = Modifier.weight(1f))
 
                 LazyColumn {
@@ -136,7 +152,6 @@ fun AddButton(navController: NavController) {
     ) {
         Button(
             onClick = { navController.navigate(Screens.Add.route) },
-            modifier = Modifier.padding(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
                 contentColor = Color.Transparent
