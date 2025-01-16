@@ -119,13 +119,17 @@ fun HabitItem(
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState, isFinishedToday) },
         content = {
-            HabitCard(habit, navController)
+            HabitCard(habit, navController, dataViewModel)
         }
     )
 }
 
 @Composable
-fun HabitCard(habit: Habit, navController: NavController) {
+fun HabitCard(
+    habit: Habit,
+    navController: NavController,
+    dataViewModel: DataViewModel
+) {
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val todayString = dateFormat.format(today)
@@ -200,24 +204,43 @@ fun HabitCard(habit: Habit, navController: NavController) {
                 )
             },
             trailingContent = {
-                if (habit.finished.any { dateFormat.format(it) == todayString }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.check),
-                        contentDescription = "checkmark icon",
-                        tint = Primary,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .padding(10.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.circle),
-                        contentDescription = "circle icon",
-                        tint = Primary,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .padding(10.dp)
-                    )
+                val context = LocalContext.current
+                val today = remember { Date() }
+                val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+                val todayString = remember { dateFormat.format(today) }
+                var isFinishedToday by remember { mutableStateOf(habit.finished.any { dateFormat.format(it) == todayString }) }
+
+                LaunchedEffect(habit.finished) {
+                    isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable {
+                            if (isFinishedToday) {
+                                dataViewModel.unmarkHabitAsFinished(habit.id)
+                                Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                            } else {
+                                dataViewModel.markHabitsAsFinished(habit.id)
+                                Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        .padding(10.dp)
+                ) {
+                    if (isFinishedToday) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.check),
+                            contentDescription = "checkmark icon",
+                            tint = Primary
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.circle),
+                            contentDescription = "circle icon",
+                            tint = Primary
+                        )
+                    }
                 }
             }
         )
