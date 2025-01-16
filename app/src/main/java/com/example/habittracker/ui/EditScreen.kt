@@ -54,6 +54,7 @@ import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import com.example.habittracker.ui.theme.OutfitFontFamily
 
@@ -265,8 +266,26 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     if (showDeleteDialog) {
                         AlertDialog(
                             onDismissRequest = { showDeleteDialog = false },
-                            title = { Text("Confirm Delete") },
-                            text = { Text("Are you sure you want to delete this habit?") },
+                            title = {
+                                Text(
+                                    "Confirm Delete",
+                                    style = TextStyle(
+                                        fontFamily = OutfitFontFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
+                                )
+                            },
+                            text = {
+                                Text(
+                                    "Are you sure you want to delete this habit?",
+                                    style = TextStyle(
+                                        fontFamily = OutfitFontFamily,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp
+                                    )
+                                )
+                            },
                             confirmButton = {
                                 TextButton(
                                     onClick = {
@@ -275,14 +294,28 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                                         showDeleteDialog = false
                                     }
                                 ) {
-                                    Text("Delete")
+                                    Text(
+                                        "Delete",
+                                        style = TextStyle(
+                                            fontFamily = OutfitFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 18.sp
+                                        )
+                                    )
                                 }
                             },
                             dismissButton = {
                                 TextButton(
                                     onClick = { showDeleteDialog = false }
                                 ) {
-                                    Text("Cancel")
+                                    Text(
+                                        "Cancel",
+                                        style = TextStyle(
+                                            fontFamily = OutfitFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 18.sp
+                                        )
+                                    )
                                 }
                             }
                         )
