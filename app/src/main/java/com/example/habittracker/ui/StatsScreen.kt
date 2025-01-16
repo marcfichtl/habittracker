@@ -46,19 +46,21 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
         .collectAsStateWithLifecycle(initialValue = null)
 
     habit?.let { nonNullHabit ->
-        val calendar = Calendar.getInstance()
+        val calendar = remember { Calendar.getInstance() }
         calendar.set(Calendar.DAY_OF_MONTH, 1)
-        val startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
-        val daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+        val startDayOfWeek = remember { calendar.get(Calendar.DAY_OF_WEEK) - 1 }
+        val daysInMonth = remember { Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH) }
         val finishedDays: List<Date> = nonNullHabit.finished
         val selectedColor by remember { mutableStateOf(colorOptions[nonNullHabit.color]) }
-        val dayLabels = listOf("S", "M", "T", "W", "T", "F", "S")
+        val dayLabels = remember { listOf("S", "M", "T", "W", "T", "F", "S") }
 
-        val repeatingDayCount = (1..daysInMonth).count { day ->
-            val dayCalendar = Calendar.getInstance().apply {
-                set(Calendar.DAY_OF_MONTH, day)
+        val repeatingDayCount = remember {
+            (1..daysInMonth).count { day ->
+                val dayCalendar = Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_MONTH, day)
+                }
+                nonNullHabit.repeat == 0 || dayCalendar.get(Calendar.DAY_OF_WEEK) == nonNullHabit.repeat
             }
-            nonNullHabit.repeat == 0 || dayCalendar.get(Calendar.DAY_OF_WEEK) == nonNullHabit.repeat
         }
 
         Column {
