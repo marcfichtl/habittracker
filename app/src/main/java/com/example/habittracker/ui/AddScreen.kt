@@ -1,5 +1,6 @@
 package com.example.habittracker.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,7 +47,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -65,6 +69,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var showDialogRepeat by remember { mutableStateOf(false) }
     var selectedRepeat by remember { mutableStateOf("every day") }
     val focusManager = LocalFocusManager.current
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -89,20 +95,32 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                     .fillMaxWidth()
                     .padding(32.dp)
             ) {
+                Spacer(Modifier.weight(1f))
                 Text(
                     text = "Habit Name",
-                    color = Primary
+                    color = Primary,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
                 TextField(
                     value = name,
-                    onValueChange = { name = it },
+                    onValueChange = {
+                        if (it.length <= 40) {
+                            name = it
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .heightIn(min = 64.dp)
                         .border(
                             BorderStroke(2.dp, Primary),
                             shape = RoundedCornerShape(4.dp)
                         ),
+                    textStyle = TextStyle(
+                        color = Primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp
+                    ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -252,27 +270,38 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         contentColor = Color.Transparent
                     ),
                     onClick = {
-                        dataviewmodel.onAddHabitClick(
-                            Habit(
-                                id = 0,
-                                name = name,
-                                color = colorOptions.indexOf(selectedColor),
-                                reminder = reminderChecked,
-                                finished = emptyList(),
-                                repeat = when (selectedRepeat) {
-                                    "every day" -> 0
-                                    "sunday" -> 1
-                                    "monday" -> 2
-                                    "tuesday" -> 3
-                                    "wednesday" -> 4
-                                    "thursday" -> 5
-                                    "friday" -> 6
-                                    "saturday" -> 7
-                                    else -> 0
-                                }
+                        if (name.isEmpty()) {
+                            val errorToast = Toast.makeText(
+                                context,
+                                "Please enter a habit name",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            dataviewmodel.onAddHabitClick(
+
+                                Habit(
+                                    id = 0,
+                                    name = name,
+                                    color = colorOptions.indexOf(selectedColor),
+                                    reminder = reminderChecked,
+                                    finished = emptyList(),
+                                    repeat = when (selectedRepeat) {
+                                        "every day" -> 0
+                                        "sunday" -> 1
+                                        "monday" -> 2
+                                        "tuesday" -> 3
+                                        "wednesday" -> 4
+                                        "thursday" -> 5
+                                        "friday" -> 6
+                                        "saturday" -> 7
+                                        else -> 0
+                                    }
+                                )
+
                             )
-                        )
-                        navController.popBackStack()
+                            navController.popBackStack()
+                        }
+
                     },
                 ) {
                     Text(

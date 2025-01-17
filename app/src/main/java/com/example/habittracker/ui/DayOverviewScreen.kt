@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,10 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.habittracker.ui.theme.OutfitFontFamily
+import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
 
 @Composable
-fun DayOverviewScreen(date: String, dataViewModel: DataViewModel) {
+fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController: NavController) {
     val habits by dataViewModel.getFinishedHabitsByDate(date).collectAsStateWithLifecycle(emptyList())
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -49,6 +54,23 @@ fun DayOverviewScreen(date: String, dataViewModel: DataViewModel) {
                     )
                 }
             }
+        }
+        Spacer(Modifier.weight(1f))
+        TextButton(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 32.dp),
+            onClick = {
+                navController.popBackStack()
+            }
+        ) {
+            Text(
+                text = "Back",
+                color = Primary,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                fontFamily = OutfitFontFamily
+            )
         }
     }
 }

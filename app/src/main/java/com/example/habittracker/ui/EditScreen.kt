@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -109,20 +110,32 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                         .fillMaxWidth()
                         .padding(32.dp)
                 ) {
+                    Spacer(Modifier.weight(1f))
                     Text(
                         text = "Habit Name",
-                        color = Primary
+                        color = Primary,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
                     TextField(
                         value = name,
-                        onValueChange = { name = it },
+                        onValueChange = {
+                            if (it.length <= 40) {
+                                name = it
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
+                            .heightIn(min = 64.dp)
                             .border(
                                 BorderStroke(2.dp, Primary),
                                 shape = RoundedCornerShape(4.dp)
                             ),
+                        textStyle = TextStyle(
+                            color = Primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 32.sp
+                        ),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,

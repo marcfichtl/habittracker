@@ -67,28 +67,20 @@ fun MainScreen(
     val navController = rememberNavController()
     val state by dataViewModel.habitsUiState.collectAsStateWithLifecycle()
 
+    fun defaultTransition() = scaleIn(
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+    ) + fadeIn(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
+
+    fun defaultExitTransition() = scaleOut(
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+    ) + fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
+
     NavHost(
         navController, Screens.Main.route, modifier = modifier,
-        enterTransition = {
-            scaleIn(
-                animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
-            ) + fadeIn(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
-        },
-        exitTransition = {
-            scaleOut(
-                animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
-            ) + fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
-        },
-        popEnterTransition = {
-            scaleIn(
-                animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
-            ) + fadeIn(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
-        },
-        popExitTransition = {
-            scaleOut(
-                animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
-            ) + fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
-        }
+        enterTransition = { defaultTransition() },
+        exitTransition = { defaultExitTransition() },
+        popEnterTransition = { defaultTransition() },
+        popExitTransition = { defaultExitTransition() }
     ) {
         composable(Screens.Main.route) {
             Column {
@@ -137,7 +129,7 @@ fun MainScreen(
         }
         composable(Screens.DayOverview.route) { backStackEntry ->
             val formattedDate = backStackEntry.arguments?.getString("formattedDate") ?: ""
-            DayOverviewScreen(formattedDate, dataViewModel)
+            DayOverviewScreen(formattedDate, dataViewModel, navController)
         }
     }
 }

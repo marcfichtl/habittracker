@@ -78,12 +78,15 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     Spacer(modifier = Modifier.weight(1f))
                     Row(
                         modifier = Modifier
-                            .padding(start = 24.dp, end = 24.dp)
+                            .padding(start = 24.dp, end = 24.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = nonNullHabit.name,
                             modifier = Modifier
-                                .padding(end = 8.dp),
+                                .padding(end = 8.dp)
+                                .weight(0.9f),
                             color = Primary,
                             fontWeight = FontWeight.Bold,
                             fontSize = 32.sp,
@@ -92,6 +95,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                             modifier = Modifier
                                 .padding(top = 8.dp)
                                 .size(24.dp)
+                                .weight(0.1f)
                                 .clickable {
                                     navController.navigate("edit/${nonNullHabit.id}")
                                 }
