@@ -119,7 +119,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                     textStyle = TextStyle(
                         color = Primary,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 32.sp
+                        fontSize = 32.sp,
+                        fontFamily = OutfitFontFamily
                     ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
