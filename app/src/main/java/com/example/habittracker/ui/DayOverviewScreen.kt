@@ -25,19 +25,25 @@ import androidx.navigation.NavController
 import com.example.habittracker.ui.theme.OutfitFontFamily
 import com.example.habittracker.ui.theme.Primary
 import com.example.habittracker.ui.theme.colorOptions
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController: NavController) {
     val habits by dataViewModel.getFinishedHabitsByDate(date).collectAsStateWithLifecycle(emptyList())
+    val formattedDate = SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(date)!!)
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Habits finished on ${date}",
+            formattedDate,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
         )
+        Spacer(Modifier.padding(32.dp))
         LazyColumn {
             items(habits) { habit ->
                 Box(
