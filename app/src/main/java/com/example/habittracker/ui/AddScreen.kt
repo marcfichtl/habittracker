@@ -63,7 +63,7 @@ import com.example.habittracker.ui.theme.colorOptions
 @Composable
 fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
     var name by remember { mutableStateOf("") }
-    var selectedColor by remember { mutableStateOf(colorOptions[0]) }
+    var selectedColor by remember { mutableStateOf(colorOptions.random()) }
     var showDialogColor by remember { mutableStateOf(false) }
     var reminderChecked by remember { mutableStateOf(false) }
     var showDialogRepeat by remember { mutableStateOf(false) }
