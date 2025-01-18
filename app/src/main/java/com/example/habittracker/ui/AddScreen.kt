@@ -319,7 +319,12 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
         if (showDialogColor) {
             AlertDialog(
                 onDismissRequest = { showDialogColor = false },
-                title = { Text("Choose Color") },
+                title = {
+                    Text(
+                        text = "Choose Color",
+                        fontFamily = OutfitFontFamily
+                    )
+                },
                 text = {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(4),
@@ -342,7 +347,10 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                 },
                 confirmButton = {
                     TextButton(onClick = { showDialogColor = false }) {
-                        Text("Close")
+                        Text(
+                            text = "Close",
+                            fontFamily = OutfitFontFamily
+                        )
                     }
                 }
             )
@@ -362,7 +370,12 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
 
             AlertDialog(
                 onDismissRequest = { showDialogRepeat = false },
-                title = { Text("Repeat on") },
+                title = {
+                    Text(
+                        text = "Repeat on",
+                        fontFamily = OutfitFontFamily
+                    )
+                },
                 text = {
                     LazyColumn {
                         items(days) { day ->
@@ -374,14 +387,18 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                                         selectedRepeat = day
                                         showDialogRepeat = false
                                     }
-                                    .padding(16.dp)
+                                    .padding(16.dp),
+                                fontFamily = OutfitFontFamily
                             )
                         }
                     }
                 },
                 confirmButton = {
                     TextButton(onClick = { showDialogRepeat = false }) {
-                        Text("Close")
+                        Text(
+                            text = "Close",
+                            fontFamily = OutfitFontFamily
+                        )
                     }
                 }
             )
