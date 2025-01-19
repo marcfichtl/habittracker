@@ -39,9 +39,9 @@ fun TutorialScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
     val images = listOf(R.drawable.tutorial1, R.drawable.tutorial2, R.drawable.tutorial3)
     val tutorialText = listOf(
-        "Tap a habit to mark it as done",
+        "Tap the circle or swipe left to mark it as done",
         "Swipe right to edit a habit",
-        "Swipe left to see statistics of a habit"
+        "Tap a habit to see statistics"
     )
     val pagerState = rememberPagerState(pageCount = { images.size })
 
