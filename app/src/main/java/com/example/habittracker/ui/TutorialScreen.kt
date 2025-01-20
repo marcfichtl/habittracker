@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habittracker.R
+import com.example.habittracker.ui.theme.Background
 import com.example.habittracker.ui.theme.OutfitFontFamily
 import com.example.habittracker.ui.theme.Primary
 import kotlinx.coroutines.launch
@@ -48,7 +49,7 @@ fun TutorialScreen(onFinish: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF121212)),
+            .background(Background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
