@@ -98,7 +98,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                                 .size(24.dp)
                                 .weight(0.1f)
                                 .clickable {
-                                    navController.navigate("edit/${nonNullHabit.id}")
+                                    navController.navigate("Edit/${nonNullHabit.id}")
                                 }
                         ) {
                             Icon(

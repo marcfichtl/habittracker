@@ -303,7 +303,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                                 TextButton(
                                     onClick = {
                                         dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
-                                        navController.popBackStack()
+                                        navController.navigate("Main")
                                         showDeleteDialog = false
                                     }
                                 ) {
