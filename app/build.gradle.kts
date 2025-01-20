@@ -64,10 +64,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     ksp("androidx.room:room-compiler:2.6.1")
 
-    //Notifications
-    implementation ("androidx.core:core-ktx:1.7.0")
-    implementation ("androidx.work:work-runtime-ktx:2.7.1")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
