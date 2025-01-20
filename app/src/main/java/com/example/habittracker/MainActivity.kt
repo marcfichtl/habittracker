@@ -100,17 +100,18 @@ class MainActivity : ComponentActivity() {
 
     fun calculateInitialDelay(): Long {
         val currentTime = System.currentTimeMillis()
-        val targetTime = Calendar.getInstance().apply {
+        val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 18)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
-        }.timeInMillis
-
-        return if (targetTime > currentTime) {
-            targetTime - currentTime
-        } else {
-            targetTime + TimeUnit.DAYS.toMillis(1) - currentTime
+            set(Calendar.MILLISECOND, 0)
         }
+
+        if (calendar.timeInMillis <= currentTime) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        return calendar.timeInMillis - currentTime
     }
 }
 
