@@ -215,7 +215,13 @@ fun HabitCard(
                 val today = remember { Date() }
                 val dateFormat = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
                 val todayString = remember { dateFormat.format(today) }
-                var isFinishedToday by remember { mutableStateOf(habit.finished.any { dateFormat.format(it) == todayString }) }
+                var isFinishedToday by remember {
+                    mutableStateOf(habit.finished.any {
+                        dateFormat.format(
+                            it
+                        ) == todayString
+                    })
+                }
 
                 LaunchedEffect(habit.finished) {
                     isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
@@ -228,11 +234,19 @@ fun HabitCard(
                             if (isFinishedToday) {
                                 dataViewModel.unmarkHabitAsFinished(habit.id)
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                Toast.makeText(context, "Habit marked as unfinished", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Habit marked as unfinished",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             } else {
                                 dataViewModel.markHabitsAsFinished(habit.id)
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                Toast.makeText(context, "Habit marked as finished", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Habit marked as finished",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                         .padding(10.dp)

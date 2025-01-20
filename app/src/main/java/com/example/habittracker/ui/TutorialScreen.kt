@@ -55,7 +55,9 @@ fun TutorialScreen(onFinish: () -> Unit) {
         Spacer(Modifier.weight(0.5f))
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f).align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterHorizontally)
         ) { page ->
             Column(
                 modifier = Modifier
@@ -125,14 +127,14 @@ fun TutorialScreen(onFinish: () -> Unit) {
                     contentColor = Color.Transparent
                 ),
                 onClick = {
-                if(pagerState.currentPage == images.size -1) {
-                    onFinish()
-                } else {
-                    scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    if (pagerState.currentPage == images.size - 1) {
+                        onFinish()
+                    } else {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
                     }
-                }
-            }) {
+                }) {
                 Text(
                     text = if (pagerState.currentPage == images.size - 1) "Finish" else "Next",
                     color = Primary,

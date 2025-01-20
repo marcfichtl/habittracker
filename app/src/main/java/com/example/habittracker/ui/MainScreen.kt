@@ -90,7 +90,11 @@ fun MainScreen(
                 ) {
                     val calendar = Calendar.getInstance()
                     Text(
-                        text = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, java.util.Locale.US) ?: "Today",
+                        text = calendar.getDisplayName(
+                            Calendar.MONTH,
+                            Calendar.LONG,
+                            java.util.Locale.US
+                        ) ?: "Today",
                         modifier = Modifier
                             .padding(16.dp)
                             .align(Alignment.CenterVertically),

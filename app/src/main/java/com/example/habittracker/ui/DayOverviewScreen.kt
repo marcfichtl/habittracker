@@ -30,11 +30,19 @@ import java.util.Locale
 
 @Composable
 fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController: NavController) {
-    val habits by dataViewModel.getFinishedHabitsByDate(date).collectAsStateWithLifecycle(emptyList())
-    val formattedDate = SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(date)!!)
+    val habits by dataViewModel.getFinishedHabitsByDate(date)
+        .collectAsStateWithLifecycle(emptyList())
+    val formattedDate = SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(
+        SimpleDateFormat(
+            "yyyy-MM-dd",
+            Locale.US
+        ).parse(date)!!
+    )
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(top = 32.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 32.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -45,7 +53,7 @@ fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController:
         )
         Spacer(Modifier.padding(32.dp))
         LazyColumn {
-            if(habits.isEmpty()){
+            if (habits.isEmpty()) {
                 item {
                     Text(
                         text = "No habits completed on this day",

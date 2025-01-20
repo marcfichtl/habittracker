@@ -378,10 +378,12 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
             if (showDialogColor) {
                 AlertDialog(
                     onDismissRequest = { showDialogColor = false },
-                    title = { Text(
-                        text = "Choose Color",
-                        fontFamily = OutfitFontFamily
-                    ) },
+                    title = {
+                        Text(
+                            text = "Choose Color",
+                            fontFamily = OutfitFontFamily
+                        )
+                    },
                     text = {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(4),
@@ -427,10 +429,12 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
 
                 AlertDialog(
                     onDismissRequest = { showDialogRepeat = false },
-                    title = { Text(
-                        text = "Repeat on",
-                        fontFamily = OutfitFontFamily
-                    ) },
+                    title = {
+                        Text(
+                            text = "Repeat on",
+                            fontFamily = OutfitFontFamily
+                        )
+                    },
                     text = {
                         LazyColumn {
                             items(days) { day ->
