@@ -303,7 +303,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                                 TextButton(
                                     onClick = {
                                         dataviewmodel.onDeleteHabitClick(nonNullHabit.id)
-                                        navController.popBackStack()
+                                        navController.popBackStack("Main", inclusive = false)
                                         showDeleteDialog = false
                                     }
                                 ) {
@@ -378,7 +378,12 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
             if (showDialogColor) {
                 AlertDialog(
                     onDismissRequest = { showDialogColor = false },
-                    title = { Text("Choose Color") },
+                    title = {
+                        Text(
+                            text = "Choose Color",
+                            fontFamily = OutfitFontFamily
+                        )
+                    },
                     text = {
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(4),
@@ -401,7 +406,10 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                     },
                     confirmButton = {
                         TextButton(onClick = { showDialogColor = false }) {
-                            Text("Close")
+                            Text(
+                                text = "Close",
+                                fontFamily = OutfitFontFamily
+                            )
                         }
                     }
                 )
@@ -421,7 +429,12 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
 
                 AlertDialog(
                     onDismissRequest = { showDialogRepeat = false },
-                    title = { Text("Repeat on") },
+                    title = {
+                        Text(
+                            text = "Repeat on",
+                            fontFamily = OutfitFontFamily
+                        )
+                    },
                     text = {
                         LazyColumn {
                             items(days) { day ->
@@ -433,14 +446,18 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                                             selectedRepeat = day
                                             showDialogRepeat = false
                                         }
-                                        .padding(16.dp)
+                                        .padding(16.dp),
+                                    fontFamily = OutfitFontFamily
                                 )
                             }
                         }
                     },
                     confirmButton = {
                         TextButton(onClick = { showDialogRepeat = false }) {
-                            Text("Close")
+                            Text(
+                                text = "Close",
+                                fontFamily = OutfitFontFamily
+                            )
                         }
                     }
                 )

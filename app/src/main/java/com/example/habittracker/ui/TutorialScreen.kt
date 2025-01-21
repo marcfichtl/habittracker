@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habittracker.R
+import com.example.habittracker.ui.theme.Background
 import com.example.habittracker.ui.theme.OutfitFontFamily
 import com.example.habittracker.ui.theme.Primary
 import kotlinx.coroutines.launch
@@ -39,23 +40,25 @@ fun TutorialScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
     val images = listOf(R.drawable.tutorial1, R.drawable.tutorial2, R.drawable.tutorial3)
     val tutorialText = listOf(
-        "Tap a habit to mark it as done",
+        "Tap the circle or swipe left to mark it as done",
         "Swipe right to edit a habit",
-        "Swipe left to see statistics of a habit"
+        "Tap a habit to see statistics"
     )
     val pagerState = rememberPagerState(pageCount = { images.size })
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF121212)),
+            .background(Background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Spacer(Modifier.weight(0.5f))
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f).align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterHorizontally)
         ) { page ->
             Column(
                 modifier = Modifier
@@ -125,14 +128,14 @@ fun TutorialScreen(onFinish: () -> Unit) {
                     contentColor = Color.Transparent
                 ),
                 onClick = {
-                if(pagerState.currentPage == images.size -1) {
-                    onFinish()
-                } else {
-                    scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    if (pagerState.currentPage == images.size - 1) {
+                        onFinish()
+                    } else {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
                     }
-                }
-            }) {
+                }) {
                 Text(
                     text = if (pagerState.currentPage == images.size - 1) "Finish" else "Next",
                     color = Primary,
