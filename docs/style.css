@@ -6,70 +6,71 @@
   /*background-color: #1B1B1B;*/
 }
 
-body{
+body {
   background: linear-gradient(-45deg, rgba(27,27,27,1) 0%, rgba(20,30,56,1) 50%, rgba(20,8,52,1) 80%, rgba(33,7,103,1) 100%);
-	background-size: 150% 150%;
+  background-size: 150% 150%;
   background-attachment: fixed;
-	animation: backgroundAnim 20s ease infinite;
+  animation: backgroundAnim 20s ease infinite;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
 }
 
-h1{
+h1 {
   margin-left: 2.5%;
 }
 
-h2{
+h2 {
   text-align: center;
   font-size: 48px;
 }
 
-h3{
+h3 {
   text-align: center;
   font-size: 28px;
 }
 
-h4{
+h4 {
   text-align: center;
   font-size: 18px;
 }
 
 #userflow {
   display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  max-height: 30rem;
-  max-width: max-content;
-  width: 100%;
 }
 
-.designs{
+.designs {
   display: flex;
-  margin-top: 2em;
-  margin-left: auto;
-  margin-right: auto;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-.designs>img{
+.designs>img {
   width: 20%;
   height: auto;
   margin: 0 1em;
+  border-radius: 25px;
 }
 
-.text-center{
+.text-center {
   text-align: center;
   font-size: 18px;
   margin-left: 10%;
   margin-right: 10%;
+  text-align: justify;
 }
 
-.list{
+.list {
   list-style-type: none;
   text-align: center;
   padding: 0;
 }
 
-.calendar-icon{
+.calendar-icon {
   display: flex;
   width: 12rem;
   height: 12rem;
@@ -78,7 +79,7 @@ h4{
 }
 
 .testing-protocol {
-  width: 40%;
+  width: 80%;
   margin: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -104,12 +105,71 @@ h4{
   color: #000;
 }
 
-.heuristic-evaluation {
-  width: 40%;
+summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+summary h3 {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.collapsible {
+  width: 80%;
   margin: 20px auto;
-  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+  max-height: auto;
+  padding: 0 20px;
+}
+
+.collapsible[open] {
+  height: auto;
+  padding: 20px;
+}
+
+.graphs{
+  display: flex;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.graphs>img{
+  width: 40%;
+  height: auto;
+  margin: 0 1em;
+  border-radius: 25px;
+}
+
+.database{
+  display: flex;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.database>img{
+  width: 80%;
+  height: auto;
+  margin: 0 1em;
+  border-radius: 25px;
+}
+
+#userflow {
+  flex-wrap: wrap;
+  justify-self: center;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  margin: 0.5em;
+  border-radius: 15px;
 }
 
 /*ANIMATION*/
