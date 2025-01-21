@@ -34,4 +34,7 @@ interface HabitDao {
 
     @Query ("SELECT * FROM habits WHERE finished LIKE :date")
     fun getFinishedHabitsByDate(date: String): Flow<List<HabitEntity>>
+
+    @Query ("SELECT * FROM habits WHERE reminder = 1")
+    fun getHabitsWithReminders(): Flow<List<HabitEntity>>
 }

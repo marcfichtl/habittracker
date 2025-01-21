@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,14 +16,11 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat.requestPermissions
 import com.example.habittracker.ui.HabitReminderReceiver
 import com.example.habittracker.ui.MainScreen
@@ -31,7 +29,6 @@ import com.example.habittracker.ui.QuoteViewModel
 import com.example.habittracker.ui.TutorialScreen
 import com.example.habittracker.ui.theme.HabittrackerTheme
 import java.util.Calendar
-import java.util.Date
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
@@ -52,13 +49,19 @@ class MainActivity : ComponentActivity() {
 
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(this, HabitReminderReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
-            val initialDelay = TimeUnit.MINUTES.toMillis(1)
+            val initialDelay = calculateInitialDelay()
+            Log.d("MainActivity", "Initial delay for alarm: $initialDelay milliseconds")
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis() + initialDelay,
-                TimeUnit.MINUTES.toMillis(1),
+                TimeUnit.DAYS.toMillis(1),
                 pendingIntent
             )
 
@@ -101,8 +104,8 @@ class MainActivity : ComponentActivity() {
     fun calculateInitialDelay(): Long {
         val currentTime = System.currentTimeMillis()
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 18)
-            set(Calendar.MINUTE, 0)
+            set(Calendar.HOUR_OF_DAY, 12)
+            set(Calendar.MINUTE, 45)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
