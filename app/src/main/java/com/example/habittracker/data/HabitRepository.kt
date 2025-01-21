@@ -75,5 +75,18 @@ class HabitRepository (private val habitDao: HabitDao) {
             )
         }
     }
+
+    fun getHabitsWithReminders() = habitDao.getHabitsWithReminders().map { list ->
+        list.map { habitEntity ->
+            Habit(
+                habitEntity._id,
+                habitEntity.name,
+                habitEntity.color,
+                habitEntity.reminder,
+                habitEntity.finished,
+                habitEntity.repeat
+            )
+        }
+    }
 }
 
