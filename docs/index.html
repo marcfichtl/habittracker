@@ -2,222 +2,292 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Habit Tracker Creative Codelab</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Habit Tracker Creative Codelab</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>Habit Tracker</h1>
-  <div class="anim-logo">
+<h1>Habit Tracker</h1>
+<div class="anim-logo">
     <img src="images/calendaricon.svg" alt="Calendar Icon" class="calendar-icon">
-  </div>
-  <h2 class="anim-logo">Habits Made Easy</h2>
-  <div>
+</div>
+<h2 class="anim-logo">Habits Made Easy</h2>
+<div>
     <p class="text-center">
-      A project created by Franz-Aurel Huber and Marcus Fichtinger
-      during the creative codelabs at the UAS St. Pölten.
+        A project created by Franz-Aurel Huber and Marcus Fichtinger
+        during the creative codelabs at the UAS St. Pölten.
     </p>
     <h3>Overview</h3>
     <p class="text-center">
-      We have chosen use case C and decided to develop our own idea.
-      The app is supposed to be a habit tracker. It should help users of any age keep track of a habit and keep those
-      habits or maybe break bad habits in the long term. <br>
-      Users can add habits they want to get accustomed to into their daily life. They then can tick a habit they have
-      done for that day as finished. Users can get reminded by the app,
-      that they should check on their habits and also get motivated through them. <br>
+        We have chosen use case C and decided to develop our own idea.
+        The app is supposed to be a habit tracker. It should help users of any age keep track of a
+        habit and keep those
+        habits or maybe break bad habits in the long term. <br>
+        Users can add habits they want to get accustomed to into their daily life. They then can
+        tick a habit they have
+        done for that day as finished. Users can get reminded by the app,
+        that they should check on their habits and also get motivated through them. <br>
     <h4>Example use cases:</h4>
     <ul class="list">
-      <li>Drinking more water</li>
-      <li>Getting more active</li>
-      <li>Read x amount of pages of a book</li>
-      <li>Meditate</li>
+        <li>Drinking more water</li>
+        <li>Getting more active</li>
+        <li>Read x amount of pages of a book</li>
+        <li>Meditate</li>
     </ul>
     <h4>Some example apps:</h4>
     <div style="text-align: center;">
-      <a href="https://play.google.com/store/apps/details?id=com.habitnow">HabitNow</a>,
-      <a href="https://play.google.com/store/apps/details?id=org.isoron.uhabits">Loop Habit Tracker</a>
+        <a href="https://play.google.com/store/apps/details?id=com.habitnow">HabitNow</a>,
+        <a href="https://play.google.com/store/apps/details?id=org.isoron.uhabits">Loop Habit
+            Tracker</a>
     </div>
     </p>
 
     <h3>Userflow</h3>
     <img src="images/Userflow.png" alt="Userflow" id="userflow">
-  </div>
-  <h3>Hi-Fi App Designs</h3>
-  <div class="designs">
+</div>
+<h3>Hi-Fi App Designs</h3>
+<div class="designs">
     <img src="images/Picture1.png" alt="Main Screen" id="main">
     <img src="images/Picture2.png" alt="Add Screen" id="add">
     <img src="images/Picture3.png" alt="Edit Screen" id="edit">
     <img src="images/Picture4.png" alt="Statistics Screen" id="stats">
-  </div>
-  <h3>Database table</h3>
-  <div class="database">
+</div>
+<h3>Database table</h3>
+<div class="database">
     <img src="images/Database_habits.png" alt="Database Layout">
-  </div>
-  <ul class="list">
+</div>
+<ul class="list">
     <li><strong>Name: </strong>The name of the habit.</li>
-    <li><strong>Color: </strong>A number from 0-7 corresponding to the color in the color array.</li>
-    <li><strong>Reminder: </strong>A boolean that is set to true if the user ticked the reminder checkbox.</li>
-    <li><strong>Finished: </strong>Saves a timestamp of the current day, when a habit is ticked.</li>
+    <li><strong>Color: </strong>A number from 0-7 corresponding to the color in the color array.
+    </li>
+    <li><strong>Reminder: </strong>A boolean that is set to true if the user ticked the reminder
+        checkbox.
+    </li>
+    <li><strong>Finished: </strong>Saves a timestamp of the current day, when a habit is ticked.
+    </li>
     <li><strong>Repeat: </strong>0 stands for every day and 1-7 stands for Sunday-Saturday.</li>
-  </ul>
-  </div>
+</ul>
+</div>
 
-  <details class="collapsible text-center">
+<details class="collapsible text-center">
     <summary>
-      <h3>Heuristic Evaluation</h3>
+        <h3>Heuristic Evaluation</h3>
     </summary>
     <p>For the heuristic evaluation, Nielsen’s 10 Heuristics were used.</p>
 
     <h4>Visibility of system status:</h4>
-    <p><strong>Positive:</strong> The app provides feedback through UI elements like toasts and text updates.</p>
+    <p><strong>Positive:</strong> The app provides feedback through UI elements like toasts and text
+        updates.</p>
 
     <h4>Match between system and the real world:</h4>
-    <p><strong>Positive:</strong> The use of icons for "Add", "Edit", and "Stats" is in line with other apps, well-known
-      and consistent.</p>
-    <p><strong>Negative:</strong> Some technical terms or icons, such as the circle when it is not checked, might not be
-      intuitive for all users.</p>
+    <p><strong>Positive:</strong> The use of icons for "Add", "Edit", and "Stats" is in line with
+        other apps, well-known
+        and consistent.</p>
+    <p><strong>Negative:</strong> Some technical terms or icons, such as the circle when it is not
+        checked, might not be
+        intuitive for all users.</p>
 
     <h4>User control and freedom:</h4>
     <p><strong>Positive:</strong></p>
     <ul class="list">
-      <li>Users can navigate back using the "Back" button or the system-wide gesture.</li>
-      <li>Users can undo a checkmark by using the same swipe gesture or by tapping the same button again.</li>
+        <li>Users can navigate back using the "Back" button or the system-wide gesture.</li>
+        <li>Users can undo a checkmark by using the same swipe gesture or by tapping the same button
+            again.
+        </li>
     </ul>
-    <p><strong>Negative:</strong> The delete button might be frustrating because of accidental deletion, because there
-      is no confirmation dialog, for example. (Changes will be made accordingly)</p>
+    <p><strong>Negative:</strong> The delete button might be frustrating because of accidental
+        deletion, because there
+        is no confirmation dialog, for example. (Changes will be made accordingly)</p>
 
     <h4>Consistency and standards:</h4>
     <p><strong>Positive:</strong> The app uses consistent design patterns and color schemes.</p>
-    <p><strong>Negative:</strong> A swiping gesture might not be the most known standard (intuitive) for ticking off a
-      checkmark, therefore a tap to check should also be implemented. (Changes will be made accordingly)</p>
+    <p><strong>Negative:</strong> A swiping gesture might not be the most known standard (intuitive)
+        for ticking off a
+        checkmark, therefore a tap to check should also be implemented. (Changes will be made
+        accordingly)</p>
 
     <h4>Error prevention:</h4>
-    <p><strong>Positive:</strong> The app minimizes errors by providing clear options and feedback, such as when trying
-      to check a habit on a day other than the set repeating day.</p>
-    <p><strong>Negative:</strong> Some error prevention mechanisms might be too restrictive, limiting user flexibility.
-      (Delete confirmation might slow down a user)</p>
+    <p><strong>Positive:</strong> The app minimizes errors by providing clear options and feedback,
+        such as when trying
+        to check a habit on a day other than the set repeating day.</p>
+    <p><strong>Negative:</strong> Some error prevention mechanisms might be too restrictive,
+        limiting user flexibility.
+        (Delete confirmation might slow down a user)</p>
 
     <h4>Recognition rather than recall:</h4>
-    <p><strong>Positive:</strong> The app displays options and information directly, reducing the need for memory.</p>
-    <p><strong>Negative:</strong> Users need to remember which day they set to repeat on the main screen, because it
-      only tells the user how many days in the month this day exists. A user also needs to remember the swipe gestures
-      (Changes for redundancy will be implemented - Expert Users)</p>
+    <p><strong>Positive:</strong> The app displays options and information directly, reducing the
+        need for memory.</p>
+    <p><strong>Negative:</strong> Users need to remember which day they set to repeat on the main
+        screen, because it
+        only tells the user how many days in the month this day exists. A user also needs to
+        remember the swipe gestures
+        (Changes for redundancy will be implemented - Expert Users)</p>
 
     <h4>Flexibility and efficiency of use:</h4>
-    <p><strong>Positive:</strong> The app supports efficient navigation with buttons, gestures and transitions.</p>
-    <p><strong>Negative:</strong> Advanced users might find the app lacking in terms of customization options.</p>
+    <p><strong>Positive:</strong> The app supports efficient navigation with buttons, gestures and
+        transitions.</p>
+    <p><strong>Negative:</strong> Advanced users might find the app lacking in terms of
+        customization options.</p>
 
     <h4>Aesthetic and minimalist design:</h4>
     <p><strong>Positive:</strong> The design is clean and focused, with minimal clutter.</p>
-    <p><strong>Negative:</strong> Minimalist design might lead to oversimplification, hiding important features or
-      information behind icons etc.</p>
+    <p><strong>Negative:</strong> Minimalist design might lead to oversimplification, hiding
+        important features or
+        information behind icons etc.</p>
 
     <h4>Recognize, diagnose, and recover from errors:</h4>
-    <p><strong>Positive:</strong> The app provides clear feedback for actions, helping users understand the system
-      state.</p>
-    <p><strong>Negative:</strong> Error messages might not be detailed enough to help users diagnose and recover from
-      issues.</p>
+    <p><strong>Positive:</strong> The app provides clear feedback for actions, helping users
+        understand the system
+        state.</p>
+    <p><strong>Negative:</strong> Error messages might not be detailed enough to help users diagnose
+        and recover from
+        issues.</p>
 
     <h4>Help and documentation:</h4>
-    <p><strong>Positive:</strong> The app's design is intuitive, reducing the need for any documentation.</p>
-    <p><strong>Negative:</strong> Lack of any tutorials or documentation might leave users confused and frustrated.
-      (Changes have been made - Onboarding added for first-time users)</p>
-  </details>
+    <p><strong>Positive:</strong> The app's design is intuitive, reducing the need for any
+        documentation.</p>
+    <p><strong>Negative:</strong> Lack of any tutorials or documentation might leave users confused
+        and frustrated.
+        (Changes have been made - Onboarding added for first-time users)</p>
+</details>
 
-  <h3>Test Protocol</h3>
-  <p class="text-center">
-    The main focus of our user test is to find out any problems or unintuitive elements of the app. By testing the ease
-    of use of many functionalities of the app, we want to determine if there are confusing or unintuitive parts that
-    need reiterating. Besides the methods mentioned below, observations also play a part in determining where a user
+<h3>Test Protocol</h3>
+<p class="text-center">
+    The main focus of our user test is to find out any problems or unintuitive elements of the app.
+    By testing the ease
+    of use of many functionalities of the app, we want to determine if there are confusing or
+    unintuitive parts that
+    need reiterating. Besides the methods mentioned below, observations also play a part in
+    determining where a user
     might be struggling.
     Information about the user test was given to the participants at the beginning of the form.
-  </p>
-  <h4>Hypothesis</h4>
-  <ul class="list">
+</p>
+<h4>Hypothesis</h4>
+<ul class="list">
     <li>It is intuitive to create a repeating habit. → Ease of use of adding a new habit</li>
-    <li>It is easy to get to the edit page and edit a habit. → Ease of use of editing an existing habit</li>
-    <li>It is easy to understand how to mark a habit as finished. → Ease of use of the main action</li>
-    <li>It is easy to understand how to view the statistics of a specific habit. → Ease of use of additional insight and
-      statistics</li>
-  </ul>
-  <h4>Methods used</h4>
-  <ul class="list">
-    <li>SEQ → gives information about the ease of use when doing a task</li>
-    <li>SUS → gives an overview as a whole about the usability of the app and helps compare different versions of the
-      app after changes were made</li>
-    <li>Additional questions → help clarify any additional points or get additional insights about a user's thoughts
+    <li>It is easy to get to the edit page and edit a habit. → Ease of use of editing an existing
+        habit
     </li>
-  </ul>
-  <div class="testing-protocol">
+    <li>It is easy to understand how to mark a habit as finished. → Ease of use of the main action
+    </li>
+    <li>It is easy to understand how to view the statistics of a specific habit. → Ease of use of
+        additional insight and
+        statistics
+    </li>
+</ul>
+<h4>Methods used</h4>
+<ul class="list">
+    <li>SEQ → gives information about the ease of use when doing a task</li>
+    <li>SUS → gives an overview as a whole about the usability of the app and helps compare
+        different versions of the
+        app after changes were made
+    </li>
+    <li>Additional questions → help clarify any additional points or get additional insights about a
+        user's thoughts
+    </li>
+</ul>
+<div class="testing-protocol">
     <h2 style="text-align: start;">Testing Protocol:</h2>
     <p><strong>Starting Task:</strong>
-      Add as many habits as you would like to and play around with the app.</p>
+        Add as many habits as you would like to and play around with the app.</p>
     <p><strong>Task 1:</strong>
-      Please create a new habit that repeats every Monday and has the name "Meditate". You can also choose any color of
-      your liking.</p>
+        Please create a new habit that repeats every Monday and has the name "Meditate". You can
+        also choose any color of
+        your liking.</p>
     <p><strong>SEQ</strong></p>
     <p><strong>Task 2:</strong>
-      Please edit the habit created beforehand and change the repeating day to "every day".</p>
+        Please edit the habit created beforehand and change the repeating day to "every day".</p>
     <p><strong>SEQ</strong></p>
     <p><strong>Task 3:</strong>
-      Please mark the habit you just edited as finished for today.</p>
+        Please mark the habit you just edited as finished for today.</p>
     <p><strong>SEQ</strong></p>
     <p><strong>Task 4:</strong>
-      View the days on the "Meditate" habit where you finished the habit.</p>
+        View the days on the "Meditate" habit where you finished the habit.</p>
     <p><strong>SEQ</strong></p>
     <p><strong>SUS</strong></p>
     <p><strong>Additional questions</strong></p>
-  </div>
-  <h3>User Test Results</h3>
-  <h4>Overview</h4>
-  <p class="text-center">
-    In total 7 participants did the user tests with 2 different versions of the app. Between the 2 different versions of
+</div>
+<h3>User Test Results</h3>
+<h4>Overview</h4>
+<p class="text-center">
+    In total 7 participants did the user tests with 2 different versions of the app. Between the 2
+    different versions of
     the app, the app was updated accordingly depending on the received feeback of the participants.
-    Because of the large amount of feedback only 3 users did the first test before already doing changes to the app.
-  </p>
-  <h4>SUS Scores</h4>
-  <p class="text-center">
-    The average SUS Score of the 1st test was 65.83. And after making the changes based on the feedback received by
+    Because of the large amount of feedback only 3 users did the first test before already doing
+    changes to the app.
+</p>
+<h4>SUS Scores</h4>
+<p class="text-center">
+    The average SUS Score of the 1st test was 65.83. And after making the changes based on the
+    feedback received by
     users
-    the average SUS Score of the 2nd test was 85.625. The SUS Score increased by around 20 points, which speaks in favor
+    the average SUS Score of the 2nd test was 85.625. The SUS Score increased by around 20 points,
+    which speaks in favor
     of the made changes.
-  </p>
-  <h4>SEQ Scores</h4>
-  <p class="text-center">
+</p>
+<h4>SEQ Scores</h4>
+<p class="text-center">
     The process of editing (Task 2) was significantly more intuitive after the changes were made.
-    The changes included an onboarding tutorial and the ability to click the circle itself to tick off a habit.
-  <div class="graphs">
+    The changes included an onboarding tutorial and the ability to click the circle itself to tick
+    off a habit.
+<div class="graphs">
     <img src="images/Average_SEQ_Before.png" alt="SEQ Before">
     <img src="images/Average_SEQ_After.png" alt="SEQ After">
-  </div>
-  </p>
-  <h4>Gesture intuitiveness</h4>
-  <p class="text-center">
-    As described before the tutorial helped users understand the swiping gesture to tick off and edit habit.
-  <div class="graphs">
+</div>
+</p>
+<h4>Gesture intuitiveness</h4>
+<p class="text-center">
+    As described before the tutorial helped users understand the swiping gesture to tick off and
+    edit habit.
+<div class="graphs">
     <img src="images/Gestures_Intuitive_Before.png" alt="Gesture Intuitive Before">
     <img src="images/Gestures_Intuitive_After.png" alt="Gesture Intuitive After">
-  </div>
+</div>
+</p>
+<h4>Most relevant feedback</h4>
+<ul class="list">
+    <li>Users found the swiping gesture to tick off a habit unintuitive. -> Made icon itself
+        clickable in addition to swiping.
+    </li>
+    <li>Users found the swiping gesture to edit a habit unintuitive. -> Added a edit icon in the
+        statistics screen.
+    </li>
+    <li>Users found the delete button too easy to accidentally press. -> Added a confirmation dialog
+        for deleting.
+    </li>
+    <li>Users didn't clearly understand what the 0/31 Days meant the first time. -> Included current
+        month heading on the main screen.
+    </li>
+    <li>Users didn't even find the gestures to quickly edit or tick a habit. -> Included tutorial at
+        first time startup.
+    </li>
+</ul>
+<h3>Final reflection</h3>
+<details class="collapsible text-center">
+  <summary><h4>Franz-Aurel Huber</h4></summary>
+  <p>
+    I am very proud of how close we got to our initial Figma designs and our vision of how the
+    app should work and behave.
+    The app looks almost identical to the mockups we created and feels good and stable to use.
+    We started the entire project with a shared Kanban board (Trello) to keep track of what still needed
+    to be done.
+    This turned out to be a great idea because, on the one hand, the workload was split very
+    evenly, and on the other, the variety of coding challenges each of us had to implement was
+    great because we always just picked the next item on our "Not Started/Ideas" list as soon as we
+    finished something.
+    <br>
+    If we had more time for the project, I would have loved to polish the notification feature
+    even further with
+    features like marking a habit as done directly from the notification or setting a specific
+    time to be notified by
+    the app. Another feature I would have liked to see, which we weren’t able to implement, was
+    reordering the habits on the MainView.
   </p>
-  <h4>Most relevant feedback</h4>
-  <ul class="list">
-    <li>Users found the swiping gesture to tick off a habit unintuitive. -> Made icon itself clickable in addition to swiping.</li>
-    <li>Users found the swiping gesture to edit a habit unintuitive. -> Added a edit icon in the statistics screen.</li>
-    <li>Users found the delete button too easy to accidentally press. -> Added a confirmation dialog for deleting.</li>
-    <li>Users didn't clearly understand what the 0/31 Days meant the first time. -> Included current month heading on the main screen.</li>
-    <li>Users didn't even find the gestures to quickly edit or tick a habit. -> Included tutorial at first time startup.</li>
-  </ul>
-  <h3>Final reflection</h3>
-  <details class="collapsible text-center">
-    <summary><h4>Franz-Aurel Huber</h4></summary>
-    <p>
-      Test Test
-    </p>
-  </details>
-  <details class="collapsible text-center">
+</details>
+<details class="collapsible text-center">
     <summary><h4>Marcus Fichtinger</h4></summary>
     <p>
       The most challenging part overall was definitely the constant reiterating of the app design based on user tests. The tasks were spread by having a shared task list
@@ -228,7 +298,7 @@
       <br>
       But overall we are very happy with the outcome of the project.
     </p>
-  </details>
+</details>
 </body>
 
 </html>
