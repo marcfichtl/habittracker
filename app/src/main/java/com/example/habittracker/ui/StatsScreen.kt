@@ -118,7 +118,6 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                 }
             }
 
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -185,7 +184,6 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                             textColor = Primary
                         }
 
-
                         Box(
                             modifier = Modifier
                                 .padding(5.dp)
@@ -206,6 +204,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     }
                 }
             }
+
             TextButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -222,7 +221,6 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     fontFamily = OutfitFontFamily
                 )
             }
-
         }
     }
 }

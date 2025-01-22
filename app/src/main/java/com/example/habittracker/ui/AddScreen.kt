@@ -173,8 +173,8 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         tint = Primary
                     )
                 }
-
             }
+
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -203,6 +203,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                         .clickable { showDialogColor = true }
                 )
             }
+
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -236,6 +237,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
                     )
                 )
             }
+
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
