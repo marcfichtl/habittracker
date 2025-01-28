@@ -83,6 +83,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Display the habit name
                         Text(
                             text = nonNullHabit.name,
                             modifier = Modifier
@@ -124,6 +125,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     .weight(0.7f)
                     .padding(top = 72.dp, start = 24.dp, end = 24.dp)
             ) {
+                // Calendar of current month
                 Text(
                     text = calendar.getDisplayName(
                         Calendar.MONTH,
@@ -157,6 +159,7 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                     modifier = Modifier.padding(top = 16.dp),
                     verticalArrangement = Arrangement.Center,
                 ) {
+                    // Empty boxes for days before the start of the month
                     items(startDayOfWeek) {
                         Box(
                             modifier = Modifier
@@ -164,9 +167,10 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                                 .size(40.dp)
                         )
                     }
+                    // Each day of the month displayed as a box
                     items(daysInMonth) { day ->
-                        var dayColor = Color.DarkGray
-                        var textColor = Color.Gray
+                        var dayColor = Color.DarkGray // Default box color (habit not ticked)
+                        var textColor = Color.Gray // Default text color (habit not ticked)
                         val dayCalendar = Calendar.getInstance().apply {
                             set(Calendar.DAY_OF_MONTH, day + 1)
                         }
@@ -180,8 +184,9 @@ fun StatsScreen(navController: NavController, dataViewModel: DataViewModel, habi
                                     Calendar.YEAR
                                 )
                             }) {
-                            dayColor = colorOptions[nonNullHabit.color]
-                            textColor = Primary
+                            dayColor =
+                                colorOptions[nonNullHabit.color] // Box color is habit color (habit ticked)
+                            textColor = Primary // Text color in the box (habit ticked)
                         }
 
                         Box(
