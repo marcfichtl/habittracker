@@ -57,6 +57,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+//Habit item composable: displays habit card with swipe functionality to check off habit or edit habit
+//Includes what to do when habit is swiped and the habit card which is on top of the dismiss background
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitItem(
@@ -73,18 +75,19 @@ fun HabitItem(
     val todayString = remember { dateFormat.format(today) }
     var isFinishedToday by remember { mutableStateOf(habit.finished.any { dateFormat.format(it) == todayString }) }
 
-    LaunchedEffect(habit.finished) {
+    LaunchedEffect(habit.finished) { //update isFinishedToday when habit.finished changes
         isFinishedToday = habit.finished.any { dateFormat.format(it) == todayString }
     }
 
+    //Swiping box to check off habit or edit habit
     val dismissState = rememberSwipeToDismissBoxState(confirmValueChange = {
         when (it) {
-            SwipeToDismissBoxValue.StartToEnd -> {
+            SwipeToDismissBoxValue.StartToEnd -> { //edit habit
                 navController.navigate("Edit/${habit.id}")
-                return@rememberSwipeToDismissBoxState false
+                return@rememberSwipeToDismissBoxState false //return to original state after swiping gesture is done
             }
 
-            SwipeToDismissBoxValue.EndToStart -> {
+            SwipeToDismissBoxValue.EndToStart -> { //check off habit
                 if (isFinishedToday) {
                     dataViewModel.unmarkHabitAsFinished(habit.id)
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -110,7 +113,7 @@ fun HabitItem(
                         }", Toast.LENGTH_SHORT
                     ).show()
                 }
-                return@rememberSwipeToDismissBoxState false
+                return@rememberSwipeToDismissBoxState false //return to original state after swiping gesture is done
             }
 
             SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
@@ -118,8 +121,8 @@ fun HabitItem(
         //return@rememberSwipeToDismissBoxState true
     },
         // positional threshold of 25%
-        positionalThreshold = { it * .25f })
-    SwipeToDismissBox(state = dismissState,
+        positionalThreshold = { it * .25f }) //percentage of the screen width to swipe before triggering the action
+    SwipeToDismissBox(state = dismissState, //swipe to dismiss box
         modifier = modifier,
         backgroundContent = { DismissBackground(dismissState, isFinishedToday) },
         content = {
@@ -128,6 +131,7 @@ fun HabitItem(
     )
 }
 
+//Habit card composable: displays habit name, progress, and checkmark and lays above dismiss background composable
 @Composable
 fun HabitCard(
     habit: Habit,
@@ -276,6 +280,7 @@ fun HabitCard(
     }
 }
 
+//Dismiss background composable: displays edit and clear icons on swipe, are behind habit card composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DismissBackground(dismissState: SwipeToDismissBoxState, isFinishedToday: Boolean) {

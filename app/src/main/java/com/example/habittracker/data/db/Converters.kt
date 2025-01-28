@@ -5,18 +5,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+//Converters to convert the finished dates to a string and vice versa
 class Converters {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-
-    /*@TypeConverter
-    fun fromString(value: String): List<String> {
-        return if (value.isEmpty()) emptyList() else value.split(",").map { it.trim() }
-    }
-
-    @TypeConverter
-    fun fromList(list: List<String>): String {
-        return list.joinToString(",")
-    }*/
 
     @TypeConverter
     fun fromDateList(dates: List<Date>?): String? {

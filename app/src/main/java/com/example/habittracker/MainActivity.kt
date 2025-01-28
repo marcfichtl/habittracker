@@ -35,18 +35,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val quotes = QuoteViewModel.getQuotesFromAssets(this)
-        val randomQuote = quotes.random()
+        val quotes = QuoteViewModel.getQuotesFromAssets(this) //Get quotes once per app launch
+        val randomQuote = quotes.random() //Get random quote from list
         setContent {
             val context = LocalContext.current
-            val showTutorial = remember { mutableStateOf(PreferenceManager.isFirstLaunch(context)) }
+            val showTutorial = remember { mutableStateOf(PreferenceManager.isFirstLaunch(context)) } //Show tutorial on first launch
 
-            createNotificationChannel()
+            createNotificationChannel() //Create notification channel for daily reminder
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { //Request notification permission if android version is Tiramisu or higher
                 requestNotificationPermission(this)
             }
 
+            //Set up daily reminder alarm
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(this, HabitReminderReceiver::class.java)
             val pendingIntent = PendingIntent.getBroadcast(
@@ -56,23 +57,23 @@ class MainActivity : ComponentActivity() {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
-            val initialDelay = calculateInitialDelay()
+            val initialDelay = calculateInitialDelay() //Calculate delay for alarm until closest 12:45
             Log.d("MainActivity", "Initial delay for alarm: $initialDelay milliseconds")
-            alarmManager.setRepeating(
+            alarmManager.setRepeating( //Set alarm to repeat every 24 hours
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis() + initialDelay,
                 TimeUnit.DAYS.toMillis(1),
                 pendingIntent
             )
 
-            LaunchedEffect(Unit) {
+            LaunchedEffect(Unit) { //Set first launch to false after tutorial is finished
                 if (showTutorial.value) {
                     PreferenceManager.setFirstLaunch(context, false)
                 }
             }
 
             HabittrackerTheme {
-                if (showTutorial.value) {
+                if (showTutorial.value) { //Show tutorial screen if first launch
                     TutorialScreen(onFinish = { showTutorial.value = false })
                 } else {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -86,6 +87,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    //Create notification channel for daily reminder
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Habit Reminder"
@@ -101,6 +103,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    //Calculate initial delay for alarm until closest 12:45, add 1 day if current time is after 12:45
     fun calculateInitialDelay(): Long {
         val currentTime = System.currentTimeMillis()
         val calendar = Calendar.getInstance().apply {
@@ -118,7 +121,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+//Request notification permission for android version Tiramisu or higher
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun requestNotificationPermission(activity: MainActivity) {
     requestPermissions(activity, arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)

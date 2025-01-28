@@ -67,6 +67,7 @@ fun MainScreen(
     val navController = rememberNavController()
     val state by dataViewModel.habitsUiState.collectAsStateWithLifecycle()
 
+    // Default transition animations
     fun defaultTransition() = scaleIn(
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
     ) + fadeIn(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
@@ -75,6 +76,7 @@ fun MainScreen(
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
     ) + fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
 
+    // Navigation
     NavHost(
         navController, Screens.Main.route, modifier = modifier,
         enterTransition = { defaultTransition() },
@@ -82,6 +84,7 @@ fun MainScreen(
         popEnterTransition = { defaultTransition() },
         popExitTransition = { defaultExitTransition() }
     ) {
+        //Main screen
         composable(Screens.Main.route) {
             Column {
                 Row(
@@ -89,7 +92,7 @@ fun MainScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     val calendar = Calendar.getInstance()
-                    Text(
+                    Text( //Current month text
                         text = calendar.getDisplayName(
                             Calendar.MONTH,
                             Calendar.LONG,
@@ -104,9 +107,9 @@ fun MainScreen(
                     )
                     AddButton(navController)
                 }
-                QuoteDisplay(randomQuote, modifier = Modifier.weight(1f))
+                QuoteDisplay(randomQuote, modifier = Modifier.weight(1f)) //Random quote
 
-                LazyColumn {
+                LazyColumn { //List of habits with HabitItem composable
                     items(state.habits) { habit ->
                         HabitItem(
                             habit = habit,
@@ -120,17 +123,21 @@ fun MainScreen(
                 }
             }
         }
+        //Add screen
         composable(Screens.Add.route) {
             AddScreen(navController, dataViewModel)
         }
+        //Edit screen
         composable("Edit/{habitId}") { backStackEntry ->
             val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
             EditScreen(navController, dataViewModel, habitId)
         }
+        //Stats screen
         composable(Screens.Stats.route) { backStackEntry ->
             val habitId = backStackEntry.arguments?.getString("habitId")?.toInt() ?: 0
             StatsScreen(navController, dataViewModel, habitId)
         }
+        //Day overview screen
         composable(Screens.DayOverview.route) { backStackEntry ->
             val formattedDate = backStackEntry.arguments?.getString("formattedDate") ?: ""
             DayOverviewScreen(formattedDate, dataViewModel, navController)

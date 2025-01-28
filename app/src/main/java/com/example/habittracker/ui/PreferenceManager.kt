@@ -3,6 +3,7 @@ package com.example.habittracker.ui
 import android.content.Context
 import android.content.SharedPreferences
 
+//Used for storing first launch preference
 object PreferenceManager {
     private const val PREF_NAME = "app_preferences"
     private const val KEY_FIRST_LAUNCH = "first_launch"

@@ -28,6 +28,7 @@ import com.example.habittracker.ui.theme.colorOptions
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+//Displays the habits completed on a particular day, opens when pressing on a day in the calendar on the StatsScreen
 @Composable
 fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController: NavController) {
     val habits by dataViewModel.getFinishedHabitsByDate(date)
@@ -53,7 +54,7 @@ fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController:
         )
         Spacer(Modifier.padding(32.dp))
         LazyColumn {
-            if (habits.isEmpty()) {
+            if (habits.isEmpty()) { //If no habits are completed on this day
                 item {
                     Text(
                         text = "No habits completed on this day",
@@ -62,7 +63,7 @@ fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController:
                         modifier = Modifier.padding(16.dp)
                     )
                 }
-            } else {
+            } else { //If there are habits completed on this day display them
                 items(habits) { habit ->
                     Box(
                         modifier = Modifier
@@ -81,6 +82,8 @@ fun DayOverviewScreen(date: String, dataViewModel: DataViewModel, navController:
             }
         }
         Spacer(Modifier.weight(1f))
+
+        //Button to go back
         TextButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

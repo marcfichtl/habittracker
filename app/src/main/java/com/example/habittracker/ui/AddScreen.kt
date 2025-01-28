@@ -318,6 +318,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
             }
         }
 
+        //Dialog window for color selection
         if (showDialogColor) {
             AlertDialog(
                 onDismissRequest = { showDialogColor = false },
@@ -358,6 +359,7 @@ fun AddScreen(navController: NavController, dataviewmodel: DataViewModel) {
             )
         }
 
+        //Dialog window for repeat
         if (showDialogRepeat) {
             val days = listOf(
                 "every day",

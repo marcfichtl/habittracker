@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class HabitReminderReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(context: Context, intent: Intent) { //receiver for daily reminder
         Log.d("HabitReminderReceiver", "onReceive called")
         val habitRepository = HabitApplication.instance.habitRepository
         val habitsFlow = habitRepository.getHabitsWithReminders()
@@ -26,17 +26,17 @@ class HabitReminderReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             habitsFlow.collect { habits ->
-                habits.filter { it.reminder && (it.repeat == currentDayOfWeek || it.repeat == 0) }
+                habits.filter { it.reminder && (it.repeat == currentDayOfWeek || it.repeat == 0) } //Filter habits that have a reminder set for today
                     .forEach { habit ->
                         val notification =
-                            NotificationCompat.Builder(context, "HABIT_REMINDER_CHANNEL")
+                            NotificationCompat.Builder(context, "HABIT_REMINDER_CHANNEL") //Create notification for each habit
                                 .setSmallIcon(R.drawable.calendaricon)
                                 .setContentTitle("Habit Reminder")
                                 .setContentText("Don't forget to ${habit.name}")
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                 .build()
 
-                        notificationManager.notify(habit.id, notification)
+                        notificationManager.notify(habit.id, notification) //Notify user
                     }
             }
         }

@@ -375,6 +375,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                 }
             }
 
+            //Dialog window for color selection
             if (showDialogColor) {
                 AlertDialog(
                     onDismissRequest = { showDialogColor = false },
@@ -415,6 +416,7 @@ fun EditScreen(navController: NavController, dataviewmodel: DataViewModel, habit
                 )
             }
 
+            //Dialog window for repeat
             if (showDialogRepeat) {
                 val days = listOf(
                     "every day",

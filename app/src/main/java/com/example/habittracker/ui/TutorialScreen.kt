@@ -46,6 +46,7 @@ fun TutorialScreen(onFinish: () -> Unit) {
     )
     val pagerState = rememberPagerState(pageCount = { images.size })
 
+    // Tutorial screen with horizontal pager
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,6 +55,7 @@ fun TutorialScreen(onFinish: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Spacer(Modifier.weight(0.5f))
+        //Pager to swipe through tutorial images
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -85,6 +87,7 @@ fun TutorialScreen(onFinish: () -> Unit) {
 
         }
 
+        //Indicator dots for tutorial images
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,6 +105,7 @@ fun TutorialScreen(onFinish: () -> Unit) {
             }
         }
 
+        //Skip and Next/Finish buttons
         Row(
             modifier = Modifier
                 .fillMaxWidth()

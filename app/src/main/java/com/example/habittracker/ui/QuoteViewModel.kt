@@ -16,13 +16,6 @@ data class Quote(val id: Int, val text: String)
 class QuoteViewModel : ViewModel() {
     private var randomQuote by mutableStateOf<Quote?>(null)
 
-    fun loadQuote(context: Context) {
-        viewModelScope.launch {
-            val quotes = getQuotesFromAssets(context)
-            randomQuote = quotes[Random.nextInt(quotes.size)]
-        }
-    }
-
     companion object {
         fun getQuotesFromAssets(context: Context): List<Quote> {
             val inputStream = context.assets.open("quotes.json")
